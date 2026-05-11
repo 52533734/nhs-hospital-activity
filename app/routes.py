@@ -145,3 +145,22 @@ def compare():
         provider2_id=provider2_id,
         provider3_id=provider3_id
     )
+
+# Handle 404 page not found errors
+@main.app_errorhandler(404)
+def page_not_found(error):
+
+    # Return custom 404 page
+    return render_template(
+        "404.html"
+    ), 404
+
+
+# Handle internal server errors
+@main.app_errorhandler(500)
+def internal_server_error(error):
+
+    # Return custom 500 page
+    return render_template(
+        "500.html"
+    ), 500

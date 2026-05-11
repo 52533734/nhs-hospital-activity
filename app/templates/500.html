@@ -1,0 +1,21 @@
+<!-- Extend shared base layout -->
+{% extends "base.html" %}
+
+<!-- Start page content -->
+{% block content %}
+
+<!-- Error heading -->
+<h1>500 - Internal Server Error</h1>
+
+<!-- Error message -->
+<p>
+    Something went wrong while processing your request.
+</p>
+
+<!-- Return to homepage -->
+<a href="{{ url_for('main.home') }}">
+    Return to Home
+</a>
+
+<!-- End page content -->
+{% endblock %}
