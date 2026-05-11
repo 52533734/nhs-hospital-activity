@@ -7,6 +7,61 @@
 <!-- Page heading -->
 <h1>NHS Providers</h1>
 
+<!-- Search and filter form -->
+<form method="GET" action="{{ url_for('main.providers') }}">
+
+    <!-- Search by provider name -->
+    <label>Provider name:</label>
+    <input
+        type="text"
+        name="search"
+        value="{{ search }}"
+        placeholder="Search provider"
+    >
+
+    <!-- Filter by region -->
+    <label>Region:</label>
+    <select name="region">
+        <option value="">All regions</option>
+
+        {% for region in regions %}
+            <option
+                value="{{ region.id }}"
+                {% if selected_region|string == region.id|string %}
+                    selected
+                {% endif %}
+            >
+                {{ region.region_name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- Filter by minimum admissions -->
+    <label>Minimum admissions:</label>
+    <input
+        type="number"
+        name="min_admissions"
+        value="{{ min_admissions or '' }}"
+        placeholder="e.g. 1000"
+    >
+
+    <!-- Filter by minimum outpatient attendance -->
+    <label>Minimum outpatient attendance:</label>
+    <input
+        type="number"
+        name="min_outpatients"
+        value="{{ min_outpatients or '' }}"
+        placeholder="e.g. 5000"
+    >
+
+    <!-- Submit filters -->
+    <button type="submit">Apply Filters</button>
+
+    <!-- Reset filters -->
+    <a href="{{ url_for('main.providers') }}">Clear</a>
+
+</form>
+
 <!-- Provider data table -->
 <table border="1">
 
@@ -63,11 +118,16 @@
 
     <!-- Show previous page link -->
     {% if providers.has_prev %}
-
-        <a href="{{ url_for('main.providers', page=providers.prev_num) }}">
+        <a href="{{ url_for(
+            'main.providers',
+            page=providers.prev_num,
+            search=search,
+            region=selected_region,
+            min_admissions=min_admissions,
+            min_outpatients=min_outpatients
+        ) }}">
             Previous
         </a>
-
     {% endif %}
 
     <!-- Display current page number -->
@@ -75,11 +135,16 @@
 
     <!-- Show next page link -->
     {% if providers.has_next %}
-
-        <a href="{{ url_for('main.providers', page=providers.next_num) }}">
+        <a href="{{ url_for(
+            'main.providers',
+            page=providers.next_num,
+            search=search,
+            region=selected_region,
+            min_admissions=min_admissions,
+            min_outpatients=min_outpatients
+        ) }}">
             Next
         </a>
-
     {% endif %}
 
 </div>
