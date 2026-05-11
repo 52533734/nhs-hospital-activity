@@ -88,3 +88,23 @@ def highest_dna_appointments():
     ).order_by(
         db.desc("total_dna")
     ).limit(10).all()
+
+def provider_summary(provider):
+    # Calculate summary totals for one provider
+    activities = provider.monthly_activities
+
+    # Return calculated totals
+    return {
+        "name": provider.org_name,
+        "region": provider.region.region_name if provider.region else "Unknown",
+        "elective_admissions": sum(a.all_elective_total or 0 for a in activities),
+        "emergency_admissions": sum(a.all_non_elective or 0 for a in activities),
+        "outpatient_attendance": sum(
+            (a.all_first_total or 0) + (a.all_subsequent_seen or 0)
+            for a in activities
+        ),
+        "dna_appointments": sum(
+            (a.all_first_dna or 0) + (a.all_subsequent_dna or 0)
+            for a in activities
+        )
+    }

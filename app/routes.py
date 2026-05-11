@@ -7,6 +7,7 @@ from app.services import (
     highest_outpatient_attendance,
     highest_dna_appointments
 )
+from app.services import provider_summary
 
 main = Blueprint("main", __name__)
 
@@ -101,4 +102,46 @@ def analytics():
         emergency_by_region=emergency_by_region,
         outpatient_attendance=outpatient_attendance,
         dna_appointments=dna_appointments
+    )
+
+
+@main.route("/compare")
+def compare():
+    # Get selected provider IDs from URL
+    provider1_id = request.args.get("provider1", type=int)
+    provider2_id = request.args.get("provider2", type=int)
+    provider3_id = request.args.get("provider3", type=int)
+
+    # Load all providers for dropdown menus
+    providers = Provider.query.order_by(Provider.org_name).all()
+
+    # Store selected provider summaries
+    selected_providers = []
+
+    # Load provider 1 if selected
+    if provider1_id:
+        provider1 = Provider.query.get(provider1_id)
+        if provider1:
+            selected_providers.append(provider_summary(provider1))
+
+    # Load provider 2 if selected
+    if provider2_id:
+        provider2 = Provider.query.get(provider2_id)
+        if provider2:
+            selected_providers.append(provider_summary(provider2))
+
+    # Load provider 3 if selected
+    if provider3_id:
+        provider3 = Provider.query.get(provider3_id)
+        if provider3:
+            selected_providers.append(provider_summary(provider3))
+
+    # Send comparison data to template
+    return render_template(
+        "compare.html",
+        providers=providers,
+        selected_providers=selected_providers,
+        provider1_id=provider1_id,
+        provider2_id=provider2_id,
+        provider3_id=provider3_id
     )
