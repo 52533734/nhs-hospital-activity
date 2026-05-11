@@ -1,4 +1,6 @@
 from app import create_app, db
+
+# Import all models
 from app.models import (
     Region,
     Provider,
@@ -8,10 +10,14 @@ from app.models import (
     AgeBandActivity
 )
 
-# Create Flask app
 app = create_app()
 
-# Create all database tables
 with app.app_context():
+
+    # Delete existing tables
+    db.drop_all()
+
+    # Recreate all tables
     db.create_all()
+
     print("Database tables created successfully!")
