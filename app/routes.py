@@ -28,3 +28,19 @@ def providers():
         "providers.html",
         providers=providers
     )
+
+@main.route("/providers/<int:provider_id>")
+def provider_detail(provider_id):
+
+    # Find provider by ID
+    provider = Provider.query.get_or_404(provider_id)
+
+    # Get provider activity records
+    activities = provider.monthly_activities
+
+    # Send data to template
+    return render_template(
+        "provider_detail.html",
+        provider=provider,
+        activities=activities
+    )

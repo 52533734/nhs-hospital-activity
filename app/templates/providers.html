@@ -41,9 +41,13 @@
 
         </td>
 
-        <!-- Placeholder for provider details page -->
+        
         <td>
-            View details
+            <!-- Link to provider detail page -->
+            <a href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
+                View details
+            </a>
+
         </td>
 
     </tr>
