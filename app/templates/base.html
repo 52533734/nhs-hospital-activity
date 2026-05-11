@@ -1,18 +1,51 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Website title -->
     <title>NHS Hospital Activity Explorer</title>
+
+    <!-- External CSS stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
+
 <body>
+
+    <!-- Website navigation menu -->
     <nav>
+
+        <!-- Homepage link -->
         <a href="/">Home</a>
+
+        <!-- Providers page link -->
         <a href="/providers">Providers</a>
+
+        <!-- Analytics dashboard link -->
         <a href="/analytics">Analytics</a>
+
+        <!-- Comparison page link -->
         <a href="/compare">Compare</a>
+
     </nav>
 
+    <hr>
+
+    <!-- Main content container -->
     <main>
-        {% block content %}{% endblock %}
+
+        <!-- Dynamic page content -->
+        {% block content %}
+        {% endblock %}
+
     </main>
+
 </body>
+
 </html>

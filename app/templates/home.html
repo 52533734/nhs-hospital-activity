@@ -1,6 +1,105 @@
+<!-- Extend shared base template -->
 {% extends "base.html" %}
 
+<!-- Start page content -->
 {% block content %}
-    <h1>NHS Hospital Activity Explorer</h1>
-    <p>Explore NHS hospital activity data from April 2020 to March 2021.</p>
+
+<!-- Main homepage title -->
+<h1>NHS Hospital Activity Explorer</h1>
+
+<!-- Introduction paragraph -->
+<p>
+    This web application analyses NHS hospital activity data
+    collected between April 2020 and March 2021.
+</p>
+
+<hr>
+
+<!-- Features section -->
+<h2>Application Features</h2>
+
+<ul>
+
+    <!-- Providers feature -->
+    <li>
+        Browse NHS healthcare providers across England
+    </li>
+
+    <!-- Search feature -->
+    <li>
+        Search and filter providers by region and activity
+    </li>
+
+    <!-- Analytics feature -->
+    <li>
+        Analyse admissions, outpatient attendance, and DNA appointments
+    </li>
+
+    <!-- Comparison feature -->
+    <li>
+        Compare up to three providers side-by-side
+    </li>
+
+    <!-- Open data feature -->
+    <li>
+        Explore NHS open healthcare datasets
+    </li>
+
+</ul>
+
+<hr>
+
+<!-- Dataset information -->
+<h2>Dataset Information</h2>
+
+<p>
+
+    The application uses provisional NHS Hospital Episode Statistics
+    (HES) data from England covering:
+
+</p>
+
+<ul>
+
+    <li>Emergency admissions</li>
+
+    <li>Elective admissions</li>
+
+    <li>Outpatient attendance</li>
+
+    <li>DNA (Did Not Attend) appointments</li>
+
+</ul>
+
+<hr>
+
+<!-- Navigation shortcuts -->
+<h2>Quick Navigation</h2>
+
+<ul>
+
+    <!-- Providers link -->
+    <li>
+        <a href="{{ url_for('main.providers') }}">
+            Browse NHS Providers
+        </a>
+    </li>
+
+    <!-- Analytics link -->
+    <li>
+        <a href="{{ url_for('main.analytics') }}">
+            View Analytics Dashboard
+        </a>
+    </li>
+
+    <!-- Comparison link -->
+    <li>
+        <a href="{{ url_for('main.compare') }}">
+            Compare Providers
+        </a>
+    </li>
+
+</ul>
+
+<!-- End page content -->
 {% endblock %}
