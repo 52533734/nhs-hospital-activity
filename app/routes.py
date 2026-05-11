@@ -104,35 +104,6 @@ def analytics():
         dna_appointments=dna_appointments
     )
 
-@main.route("/compare")
-def compare():
-
-    # Get selected providers
-    provider1_id = request.args.get("provider1", type=int)
-    provider2_id = request.args.get("provider2", type=int)
-
-    # Load all providers for dropdowns
-    providers = Provider.query.order_by(
-        Provider.org_name
-    ).all()
-
-    provider1 = None
-    provider2 = None
-
-    # Load provider 1
-    if provider1_id:
-        provider1 = Provider.query.get(provider1_id)
-
-    # Load provider 2
-    if provider2_id:
-        provider2 = Provider.query.get(provider2_id)
-
-    return render_template(
-        "compare.html",
-        providers=providers,
-        provider1=provider1,
-        provider2=provider2
-    )
 
 @main.route("/compare")
 def compare():
