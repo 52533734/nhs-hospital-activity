@@ -12,47 +12,102 @@
 
     <!-- First provider dropdown -->
     <label>Provider 1:</label>
-    <select name="provider1">
-        <option value="">Select provider</option>
+    <!-- Provider 1 dropdown -->
+    <select name="provider1" id="provider1">
 
+        <!-- Default option -->
+        <option value="">
+            Select provider
+        </option>
+
+        <!-- Loop through all providers -->
         {% for provider in providers %}
+
+            <!-- Provider option -->
             <option
                 value="{{ provider.id }}"
-                {% if provider1_id == provider.id %}selected{% endif %}
+
+                {% if provider1_id == provider.id %}
+                    selected
+                {% endif %}
+
+                {% if provider.id == provider2_id or provider.id == provider3_id %}
+                    disabled
+                {% endif %}
             >
+
                 {{ provider.org_name }}
+
             </option>
+
         {% endfor %}
+
     </select>
 
-    <!-- Second provider dropdown -->
-    <label>Provider 2:</label>
-    <select name="provider2">
-        <option value="">Select provider</option>
 
+    <!-- Provider 2 dropdown -->
+    <select name="provider2" id="provider2">
+
+        <!-- Default option -->
+        <option value="">
+            Select provider
+        </option>
+
+        <!-- Loop through all providers -->
         {% for provider in providers %}
+
+            <!-- Provider option -->
             <option
                 value="{{ provider.id }}"
-                {% if provider2_id == provider.id %}selected{% endif %}
+
+                {% if provider2_id == provider.id %}
+                    selected
+                {% endif %}
+
+                {% if provider.id == provider1_id or provider.id == provider3_id %}
+                    disabled
+                {% endif %}
             >
+
                 {{ provider.org_name }}
+
             </option>
+
         {% endfor %}
+
     </select>
 
-    <!-- Third optional provider dropdown -->
-    <label>Provider 3:</label>
-    <select name="provider3">
-        <option value="">Optional provider</option>
 
+    <!-- Provider 3 dropdown -->
+    <select name="provider3" id="provider3">
+
+        <!-- Default option -->
+        <option value="">
+            Optional provider
+        </option>
+
+        <!-- Loop through all providers -->
         {% for provider in providers %}
+
+            <!-- Provider option -->
             <option
                 value="{{ provider.id }}"
-                {% if provider3_id == provider.id %}selected{% endif %}
+
+                {% if provider3_id == provider.id %}
+                    selected
+                {% endif %}
+
+                {% if provider.id == provider1_id or provider.id == provider2_id %}
+                    disabled
+                {% endif %}
             >
+
                 {{ provider.org_name }}
+
             </option>
+
         {% endfor %}
+
     </select>
 
     <!-- Submit comparison -->
