@@ -120,6 +120,16 @@
 
 <hr>
 
+<!-- Show validation error message -->
+{% if error %}
+
+    <!-- Error text -->
+    <p class="error-message">
+        {{ error }}
+    </p>
+
+{% endif %}
+
 <!-- Show message before providers are selected -->
 {% if selected_providers|length == 0 %}
 
