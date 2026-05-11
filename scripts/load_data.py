@@ -1,0 +1,329 @@
+import sys
+import os
+
+# Add project root directory to Python path
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+)
+
+# Import pandas for CSV processing
+import pandas as pd
+
+# Import Flask app and database
+from app import create_app, db
+
+# Import database models
+from app.models import (
+    Region,
+    Provider,
+    MonthlyActivity
+)
+
+# Create Flask application instance
+app = create_app()
+
+
+# Safely convert NHS values into integers
+def safe_int(value):
+
+    try:
+
+        # Replace missing values with 0
+        if pd.isna(value):
+            return 0
+
+        # Clean commas, hidden values, and spaces
+        value = str(value).replace(",", "").replace("*", "").strip()
+
+        # Replace empty strings with 0
+        if value == "":
+            return 0
+
+        # Convert value to integer
+        return int(float(value))
+
+    except:
+
+        # Return 0 if conversion fails
+        return 0
+
+
+# Start Flask application context
+with app.app_context():
+
+    print("Loading NHS activity data...")
+
+    # Read NHS CSV file
+    df = pd.read_csv(
+        "data/HES MAR 2020-21 M13.csv",
+        encoding="latin1"
+    )
+
+    # Standardise column names
+    df.columns = (
+        df.columns
+        .str.strip()
+        .str.upper()
+        .str.replace(" ", "_")
+    )
+
+    # Print column names for debugging
+    print(df.columns.tolist())
+
+    # Display original row count
+    print(f"Original rows: {len(df)}")
+
+    # Keep only provider-level rows
+    df = df[df["ORGANISATION_BREAKDOWN"] == "Provider"]
+
+    # Display provider row count
+    print(f"Provider rows: {len(df)}")
+
+    # Limit rows for assignment requirement
+    df = df.head(5000)
+
+    # Display final row count
+    print(f"Rows selected: {len(df)}")
+
+    # Loop through all rows
+    for _, row in df.iterrows():
+
+        # Get region name
+        region_name = str(
+            row.get("REGION_NAME", "Unknown")
+        ).strip()
+
+        # Get region code
+        region_code = str(
+            row.get("REGION_CODE", "UNKNOWN")
+        ).strip()
+
+        # Find existing region
+        region = Region.query.filter_by(
+            region_code=region_code
+        ).first()
+
+        # Create region if not found
+        if not region:
+
+            region = Region(
+                region_code=region_code,
+                region_name=region_name
+            )
+
+            # Save region temporarily
+            db.session.add(region)
+            db.session.flush()
+
+        # Get provider code
+        org_code = str(
+            row.get("ORG_CODE", "")
+        ).strip()
+
+        # Get provider name
+        org_name = str(
+            row.get("ORG_NAME", "")
+        ).strip()
+
+        # Skip invalid providers
+        if not org_code or not org_name:
+            continue
+
+        # Find existing provider
+        provider = Provider.query.filter_by(
+            org_code=org_code
+        ).first()
+
+        # Create provider if not found
+        if not provider:
+
+            provider = Provider(
+
+                # Save provider code
+                org_code=org_code,
+
+                # Save provider name
+                org_name=org_name,
+
+                # Save organisation type
+                organisation_breakdown=row.get(
+                    "ORGANISATION_BREAKDOWN"
+                ),
+
+                # Link provider to region
+                region=region
+            )
+
+            # Save provider temporarily
+            db.session.add(provider)
+            db.session.flush()
+
+        # Create monthly activity record
+        activity = MonthlyActivity(
+
+            # Link activity to provider
+            provider=provider,
+
+            # Save financial year
+            financial_year=str(
+                row.get("FINANCIAL_YEAR", "")
+            ),
+
+            # Save reporting period
+            reporting_period=safe_int(
+                row.get("REPORTING_PERIOD")
+            ),
+
+            # Save activity month
+            activity_month=str(
+                row.get("ACTIVITY_MONTH", "")
+            ),
+
+            # Save specific elective admissions
+            specific_ordinary_elective=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_ORDINARY_ELECTIVE"
+                )
+            ),
+
+            # Save specific day case admissions
+            specific_daycase_elective=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_DAYCASE_ELECTIVE"
+                )
+            ),
+
+            # Save total specific elective admissions
+            specific_elective_total=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_ELECTIVE_TOTAL"
+                )
+            ),
+
+            # Save specific emergency admissions
+            specific_non_elective=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_NON-ELECTIVE"
+                )
+            ),
+
+            # Save GP referral attendances
+            specific_first_gp=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_-_GP_REFERRALS"
+                )
+            ),
+
+            # Save other referral attendances
+            specific_first_other=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_-_OTHER_REFERRALS"
+                )
+            ),
+
+            # Save total first attendances
+            specific_first_total=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_TOTAL"
+                )
+            ),
+
+            # Save missed first attendances
+            specific_first_dna=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_FIRST_ATTENDANCES_DNA"
+                )
+            ),
+
+            # Save follow-up attendances
+            specific_subsequent_seen=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_SUBSEQUENT_ATTENDANCES_SEEN"
+                )
+            ),
+
+            # Save missed follow-up attendances
+            specific_subsequent_dna=safe_int(
+                row.get(
+                    "SPECIFIC_ACUTE_SPECIALTIES:_SUBSEQUENT_ATTENDANCES_DNA"
+                )
+            ),
+
+            # Save total elective admissions
+            all_ordinary_elective=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_ORDINARY_ELECTIVE"
+                )
+            ),
+
+            # Save total day case admissions
+            all_daycase_elective=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_DAYCASE_ELECTIVE"
+                )
+            ),
+
+            # Save total elective activity
+            all_elective_total=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_ELECTIVE_TOTAL"
+                )
+            ),
+
+            # Save total emergency admissions
+            all_non_elective=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_NON-ELECTIVE"
+                )
+            ),
+
+            # Save total GP referrals
+            all_first_gp=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_-_GP_REFERRALS"
+                )
+            ),
+
+            # Save total other referrals
+            all_first_other=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_-_OTHER_REFERRALS"
+                )
+            ),
+
+            # Save total first attendances
+            all_first_total=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_FIRST_ATTENDANCES_SEEN_TOTAL"
+                )
+            ),
+
+            # Save total missed first attendances
+            all_first_dna=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_FIRST_ATTENDANCES_DNA"
+                )
+            ),
+
+            # Save total follow-up attendances
+            all_subsequent_seen=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_SUBSEQUENT_ATTENDANCES_SEEN"
+                )
+            ),
+
+            # Save total missed follow-up attendances
+            all_subsequent_dna=safe_int(
+                row.get(
+                    "ALL_SPECIALTIES:_SUBSEQUENT_ATTENDANCES_DNA"
+                )
+            ),
+        )
+
+        # Add activity record to database session
+        db.session.add(activity)
+
+    # Commit all records to database
+    db.session.commit()
+
+    print("NHS provider activity data imported successfully!")
