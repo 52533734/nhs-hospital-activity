@@ -1,6 +1,94 @@
 {% extends "base.html" %}
 
+<!-- Start of content block -->
 {% block content %}
-    <h1>NHS Hospital Activity Explorer</h1>
-    <p>Explore NHS hospital activity data from April 2020 to March 2021.</p>
+
+<!-- Main page heading -->
+<h1>NHS Hospital Activity Explorer</h1>
+
+<!-- Introductory information box -->
+<p class="info-box">
+    Analyse NHS hospital activity data across England, including admissions,
+    outpatient attendance, missed appointments, and provider comparisons.
+</p>
+
+<!-- Horizontal divider -->
+<hr>
+
+<!-- Features section heading -->
+<h2>Application Features</h2>
+
+<!-- Grid container for feature cards -->
+<div class="card-grid">
+
+    <!-- Providers feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>Browse Providers</h3>
+
+        <!-- Card description -->
+        <p>Search and filter NHS healthcare providers by region and activity levels.</p>
+
+        <!-- Link button to providers page -->
+        <a class="button" href="{{ url_for('main.providers') }}">Browse Providers</a>
+    </div>
+
+    <!-- Analytics feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>View Analytics</h3>
+
+        <!-- Card description -->
+        <p>Explore provider rankings, emergency admissions, outpatient activity, and DNA appointments.</p>
+
+        <!-- Link button to analytics page -->
+        <a class="button" href="{{ url_for('main.analytics') }}">View Analytics</a>
+    </div>
+
+    <!-- Compare providers feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>Compare Providers</h3>
+
+        <!-- Card description -->
+        <p>Compare two or three NHS providers side-by-side using key activity metrics.</p>
+
+        <!-- Link button to compare page -->
+        <a class="button" href="{{ url_for('main.compare') }}">Compare Providers</a>
+    </div>
+
+</div>
+
+<!-- Horizontal divider -->
+<hr>
+
+<!-- Dataset section heading -->
+<h2>Dataset Information</h2>
+
+<!-- Dataset description -->
+<p>
+    The application uses provisional NHS Hospital Episode Statistics data
+    from England covering April 2020 to March 2021.
+</p>
+
+<!-- Dataset metrics list -->
+<ul>
+
+    <!-- Emergency admissions metric -->
+    <li>Emergency admissions</li>
+
+    <!-- Elective admissions metric -->
+    <li>Elective admissions</li>
+
+    <!-- Outpatient attendance metric -->
+    <li>Outpatient attendance</li>
+
+    <!-- Missed appointments metric -->
+    <li>DNA appointments</li>
+</ul>
+
+<!-- End of content block -->
 {% endblock %}

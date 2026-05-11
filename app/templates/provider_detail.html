@@ -1,33 +1,48 @@
-<!-- Extend base layout -->
 {% extends "base.html" %}
 
-<!-- Start content block -->
+<!-- Start of content block -->
 {% block content %}
 
-<!-- Provider heading -->
+<!-- Provider name heading -->
 <h1>{{ provider.org_name }}</h1>
 
-<!-- Provider region -->
-<p>
+<!-- Provider region information box -->
+<div class="info-box">
 
+    <!-- Region label -->
     <strong>Region:</strong>
 
+    <!-- Check if provider has a region -->
     {% if provider.region %}
-        {{ provider.region.region_name }}
+
+        <!-- Display provider region name -->
+        {{ provider.region.region_name.title() }}
+
     {% else %}
+
+        <!-- Display fallback text -->
         Unknown
+
     {% endif %}
+</div>
 
-</p>
-
-<hr>
-
-<!-- Monthly activity table -->
+<!-- Monthly activity section heading -->
 <h2>Monthly Activity</h2>
 
-<table border="1">
+<!-- Check if there are no activity records -->
+{% if activities|length == 0 %}
 
-    <!-- Table headings -->
+    <!-- Empty state message -->
+    <div class="empty-state">
+        <strong>No activity records found for this provider.</strong>
+    </div>
+
+{% else %}
+
+<!-- Table displaying monthly activity data -->
+<table>
+
+    <!-- Table header row -->
     <tr>
         <th>Month</th>
         <th>Total Admissions</th>
@@ -35,35 +50,26 @@
         <th>DNA Appointments</th>
     </tr>
 
-    <!-- Loop through provider activity -->
+    <!-- Loop through provider activity records -->
     {% for activity in activities %}
 
+    <!-- Table row for each activity record -->
     <tr>
-
-        <!-- Activity month -->
         <td>{{ activity.activity_month }}</td>
-
-        <!-- Total admissions -->
         <td>{{ activity.total_admissions }}</td>
-
-        <!-- Total outpatient attendance -->
         <td>{{ activity.total_outpatient_attendance }}</td>
-
-        <!-- Total missed appointments -->
         <td>{{ activity.dna_total }}</td>
-
     </tr>
 
     {% endfor %}
-
 </table>
 
-<br>
+{% endif %}
 
-<!-- Back link -->
-<a href="{{ url_for('main.providers') }}">
-    Back to providers list
+<!-- Link back to providers page -->
+<a class="button" href="{{ url_for('main.providers') }}">
+    Back to Providers
 </a>
 
-<!-- End content block -->
+<!-- End of content block -->
 {% endblock %}

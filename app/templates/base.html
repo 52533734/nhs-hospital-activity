@@ -1,18 +1,44 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title displayed in the browser tab -->
     <title>NHS Hospital Activity Explorer</title>
+
+    <!-- Link to external CSS stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
+
+    <!-- Navigation menu section -->
     <nav>
-        <a href="/">Home</a>
-        <a href="/providers">Providers</a>
-        <a href="/analytics">Analytics</a>
-        <a href="/compare">Compare</a>
+        <!-- Link to Home page -->
+        <a href="{{ url_for('main.home') }}">Home</a>
+
+        <!-- Link to Providers page -->
+        <a href="{{ url_for('main.providers') }}">Providers</a>
+
+        <!-- Link to Analytics page -->
+        <a href="{{ url_for('main.analytics') }}">Analytics</a>
+
+        <!-- Link to Compare page -->
+        <a href="{{ url_for('main.compare') }}">Compare</a>
     </nav>
 
+    <!-- Main content area -->
     <main>
-        {% block content %}{% endblock %}
+        <!-- Jinja block where child templates insert content -->
+        {% block content %}
+
+        <!-- End of content block -->
+        {% endblock %}
     </main>
+
 </body>
+
 </html>

@@ -115,26 +115,34 @@ def compare():
     # Load all providers for dropdown menus
     providers = Provider.query.order_by(Provider.org_name).all()
 
+    # Store selected IDs that are not empty
+    selected_ids = [
+        provider_id
+        for provider_id in [provider1_id, provider2_id, provider3_id]
+        if provider_id
+    ]
+
+    # Store validation error message
+    error_message = None
+
+    # Check if duplicate providers were selected
+    if len(selected_ids) != len(set(selected_ids)):
+        error_message = "Please select different providers for comparison."
+
+    # Check at least two providers are selected
+    elif len(selected_ids) < 2 and len(selected_ids) > 0:
+        error_message = "Please select at least two providers to compare."
+
     # Store selected provider summaries
     selected_providers = []
 
-    # Load provider 1 if selected
-    if provider1_id:
-        provider1 = Provider.query.get(provider1_id)
-        if provider1:
-            selected_providers.append(provider_summary(provider1))
+    # Only build comparison if there is no validation error
+    if not error_message:
+        for provider_id in selected_ids:
+            provider = Provider.query.get(provider_id)
 
-    # Load provider 2 if selected
-    if provider2_id:
-        provider2 = Provider.query.get(provider2_id)
-        if provider2:
-            selected_providers.append(provider_summary(provider2))
-
-    # Load provider 3 if selected
-    if provider3_id:
-        provider3 = Provider.query.get(provider3_id)
-        if provider3:
-            selected_providers.append(provider_summary(provider3))
+            if provider:
+                selected_providers.append(provider_summary(provider))
 
     # Send comparison data to template
     return render_template(
@@ -143,8 +151,10 @@ def compare():
         selected_providers=selected_providers,
         provider1_id=provider1_id,
         provider2_id=provider2_id,
-        provider3_id=provider3_id
+        provider3_id=provider3_id,
+        error_message=error_message
     )
+
 
 # Handle 404 page not found errors
 @main.app_errorhandler(404)

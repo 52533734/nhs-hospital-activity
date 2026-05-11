@@ -1,21 +1,20 @@
-<!-- Extend shared base layout -->
 {% extends "base.html" %}
 
-<!-- Start page content -->
+<!-- Start of content block -->
 {% block content %}
 
-<!-- Error heading -->
+<!-- Main error page heading -->
 <h1>500 - Internal Server Error</h1>
 
-<!-- Error message -->
-<p>
-    Something went wrong while processing your request.
-</p>
+<!-- Empty state container for server error message -->
+<div class="empty-state">
+    <p>Something went wrong while processing your request.</p>
+</div>
 
-<!-- Return to homepage -->
-<a href="{{ url_for('main.home') }}">
+<!-- Button link to return to homepage -->
+<a class="button" href="{{ url_for('main.home') }}">
     Return to Home
 </a>
 
-<!-- End page content -->
+<!-- End of content block -->
 {% endblock %}
