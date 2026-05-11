@@ -22,18 +22,24 @@
     <!-- Filter by region -->
     <label>Region:</label>
     <select name="region">
+        
         <option value="">All regions</option>
 
         {% for region in regions %}
+
             <option
                 value="{{ region.id }}"
                 {% if selected_region|string == region.id|string %}
                     selected
                 {% endif %}
             >
+
                 {{ region.region_name }}
+
             </option>
+
         {% endfor %}
+
     </select>
 
     <!-- Filter by minimum admissions -->
@@ -67,23 +73,33 @@
 
     <!-- Table header row -->
     <tr>
+
         <th>Provider Name</th>
+
         <th>Region</th>
+
         <th>Details</th>
+        
     </tr>
 
     <!-- Loop through paginated providers -->
+     
     {% for provider in providers.items %}
 
     <tr>
 
         <!-- Display provider name -->
-        <td>{{ provider.org_name }}</td>
+        <td class="provider-name">
+
+            {{ provider.org_name.lower() }}
+
+        </td>
 
         <!-- Display provider region -->
         <td>
 
             <!-- Check if region exists -->
+
             {% if provider.region %}
 
                 {{ provider.region.region_name }}
@@ -99,8 +115,9 @@
         
         <td>
             <!-- Link to provider detail page -->
-            <a href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
-                View details
+
+            <a class="details-button" href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
+                View Details
             </a>
 
         </td>
@@ -117,7 +134,9 @@
 <div>
 
     <!-- Show previous page link -->
+
     {% if providers.has_prev %}
+
         <a href="{{ url_for(
             'main.providers',
             page=providers.prev_num,
@@ -128,13 +147,17 @@
         ) }}">
             Previous
         </a>
+
     {% endif %}
 
     <!-- Display current page number -->
+
     Page {{ providers.page }} of {{ providers.pages }}
 
     <!-- Show next page link -->
+
     {% if providers.has_next %}
+
         <a href="{{ url_for(
             'main.providers',
             page=providers.next_num,
@@ -145,6 +168,7 @@
         ) }}">
             Next
         </a>
+
     {% endif %}
 
 </div>

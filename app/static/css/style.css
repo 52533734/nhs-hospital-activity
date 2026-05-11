@@ -97,3 +97,25 @@ hr {
     border-top: 1px solid #ddd;
     margin: 25px 0;
 }
+
+/* Format provider names */
+.provider-name {
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+/* Details button styling */
+.details-button {
+    background-color: #005eb8;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+/* Hover effect for details button */
+.details-button:hover {
+    background-color: #003087;
+}
