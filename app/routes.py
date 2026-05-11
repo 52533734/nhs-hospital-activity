@@ -107,8 +107,7 @@ def analytics():
 
 @main.route("/compare")
 def compare():
-
-    # Get selected provider IDs from URL query parameters
+    # Get selected provider IDs from URL
     provider1_id = request.args.get("provider1", type=int)
     provider2_id = request.args.get("provider2", type=int)
     provider3_id = request.args.get("provider3", type=int)
@@ -116,58 +115,46 @@ def compare():
     # Load all providers for dropdown menus
     providers = Provider.query.order_by(Provider.org_name).all()
 
-    # Store only provider IDs that were selected
+    # Store selected IDs that are not empty
     selected_ids = [
-        pid for pid in [provider1_id, provider2_id, provider3_id] if pid
+        provider_id
+        for provider_id in [provider1_id, provider2_id, provider3_id]
+        if provider_id
     ]
 
-    # Store error message if validation fails
-    error = None
+    # Store validation error message
+    error_message = None
 
-    # Store provider comparison summaries
+    # Check if duplicate providers were selected
+    if len(selected_ids) != len(set(selected_ids)):
+        error_message = "Please select different providers for comparison."
+
+    # Check at least two providers are selected
+    elif len(selected_ids) < 2 and len(selected_ids) > 0:
+        error_message = "Please select at least two providers to compare."
+
+    # Store selected provider summaries
     selected_providers = []
 
-    # Check if the same provider was selected more than once
-    if len(selected_ids) != len(set(selected_ids)):
+    # Only build comparison if there is no validation error
+    if not error_message:
+        for provider_id in selected_ids:
+            provider = Provider.query.get(provider_id)
 
-        # Show validation error message
-        error = "Please select different providers for comparison."
+            if provider:
+                selected_providers.append(provider_summary(provider))
 
-        # Clear selected IDs to stop comparison table rendering
-        selected_ids = []
-
-    # Check if user selected only one provider
-    if len(selected_ids) == 1:
-
-        # Show validation error message
-        error = "Please select at least two providers to compare."
-
-        # Clear selected IDs to stop comparison table rendering
-        selected_ids = []
-
-    # Loop through valid provider IDs
-    for provider_id in selected_ids:
-
-        # Find provider by ID
-        provider = Provider.query.get(provider_id)
-
-        # Check provider exists in database
-        if provider:
-
-            # Generate provider summary and add to comparison list
-            selected_providers.append(
-                provider_summary(provider)
-            )
-
-    # Render compare page with all required data
+    # Send comparison data to template
     return render_template(
         "compare.html",
         providers=providers,
         selected_providers=selected_providers,
         provider1_id=provider1_id,
         provider2_id=provider2_id,
-        provider3_id=provider3_id
+        provider3_id=provider3_id,
+        error_message=error_message
     )
+
 
 # Handle 404 page not found errors
 @main.app_errorhandler(404)

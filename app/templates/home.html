@@ -1,105 +1,94 @@
-<!-- Extend shared base template -->
 {% extends "base.html" %}
 
-<!-- Start page content -->
+<!-- Start of content block -->
 {% block content %}
 
-<!-- Main homepage title -->
+<!-- Main page heading -->
 <h1>NHS Hospital Activity Explorer</h1>
 
-<!-- Introduction paragraph -->
-<p>
-    This web application analyses NHS hospital activity data
-    collected between April 2020 and March 2021.
+<!-- Introductory information box -->
+<p class="info-box">
+    Analyse NHS hospital activity data across England, including admissions,
+    outpatient attendance, missed appointments, and provider comparisons.
 </p>
 
+<!-- Horizontal divider -->
 <hr>
 
-<!-- Features section -->
+<!-- Features section heading -->
 <h2>Application Features</h2>
 
-<ul>
+<!-- Grid container for feature cards -->
+<div class="card-grid">
 
-    <!-- Providers feature -->
-    <li>
-        Browse NHS healthcare providers across England
-    </li>
+    <!-- Providers feature card -->
+    <div class="card">
 
-    <!-- Search feature -->
-    <li>
-        Search and filter providers by region and activity
-    </li>
+        <!-- Card title -->
+        <h3>Browse Providers</h3>
 
-    <!-- Analytics feature -->
-    <li>
-        Analyse admissions, outpatient attendance, and DNA appointments
-    </li>
+        <!-- Card description -->
+        <p>Search and filter NHS healthcare providers by region and activity levels.</p>
 
-    <!-- Comparison feature -->
-    <li>
-        Compare up to three providers side-by-side
-    </li>
+        <!-- Link button to providers page -->
+        <a class="button" href="{{ url_for('main.providers') }}">Browse Providers</a>
+    </div>
 
-    <!-- Open data feature -->
-    <li>
-        Explore NHS open healthcare datasets
-    </li>
+    <!-- Analytics feature card -->
+    <div class="card">
 
-</ul>
+        <!-- Card title -->
+        <h3>View Analytics</h3>
 
+        <!-- Card description -->
+        <p>Explore provider rankings, emergency admissions, outpatient activity, and DNA appointments.</p>
+
+        <!-- Link button to analytics page -->
+        <a class="button" href="{{ url_for('main.analytics') }}">View Analytics</a>
+    </div>
+
+    <!-- Compare providers feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>Compare Providers</h3>
+
+        <!-- Card description -->
+        <p>Compare two or three NHS providers side-by-side using key activity metrics.</p>
+
+        <!-- Link button to compare page -->
+        <a class="button" href="{{ url_for('main.compare') }}">Compare Providers</a>
+    </div>
+
+</div>
+
+<!-- Horizontal divider -->
 <hr>
 
-<!-- Dataset information -->
+<!-- Dataset section heading -->
 <h2>Dataset Information</h2>
 
+<!-- Dataset description -->
 <p>
-
-    The application uses provisional NHS Hospital Episode Statistics
-    (HES) data from England covering:
-
+    The application uses provisional NHS Hospital Episode Statistics data
+    from England covering April 2020 to March 2021.
 </p>
 
+<!-- Dataset metrics list -->
 <ul>
 
+    <!-- Emergency admissions metric -->
     <li>Emergency admissions</li>
 
+    <!-- Elective admissions metric -->
     <li>Elective admissions</li>
 
+    <!-- Outpatient attendance metric -->
     <li>Outpatient attendance</li>
 
-    <li>DNA (Did Not Attend) appointments</li>
-
+    <!-- Missed appointments metric -->
+    <li>DNA appointments</li>
 </ul>
 
-<hr>
-
-<!-- Navigation shortcuts -->
-<h2>Quick Navigation</h2>
-
-<ul>
-
-    <!-- Providers link -->
-    <li>
-        <a href="{{ url_for('main.providers') }}">
-            Browse NHS Providers
-        </a>
-    </li>
-
-    <!-- Analytics link -->
-    <li>
-        <a href="{{ url_for('main.analytics') }}">
-            View Analytics Dashboard
-        </a>
-    </li>
-
-    <!-- Comparison link -->
-    <li>
-        <a href="{{ url_for('main.compare') }}">
-            Compare Providers
-        </a>
-    </li>
-
-</ul>
-
-<!-- End page content -->
+<!-- End of content block -->
 {% endblock %}

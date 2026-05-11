@@ -1,121 +1,335 @@
+/* Main page styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     background-color: #f4f6f9;
     color: #222;
+    line-height: 1.6;
 }
 
+/* Top navigation bar */
 nav {
     background-color: #005eb8;
-    padding: 15px 30px;
+    padding: 16px 40px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
 }
 
+/* Navigation links */
 nav a {
     color: white;
     text-decoration: none;
-    margin-right: 20px;
     font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-main {
-    width: 90%;
-    margin: 25px auto;
-    background-color: white;
-    padding: 25px;
-    border-radius: 8px;
-}
-
-h1, h2 {
-    color: #003087;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-bottom: 30px;
-}
-
-th {
-    background-color: #005eb8;
-    color: white;
-    padding: 10px;
-    text-align: left;
-}
-
-td {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-form {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #eef4fb;
-    border-radius: 6px;
-}
-
-label {
-    font-weight: bold;
-    margin-right: 5px;
-}
-
-input,
-select,
-button {
-    padding: 7px;
-    margin: 5px;
-}
-
-button {
-    background-color: #005eb8;
-    color: white;
-    border: none;
-    cursor: pointer;
+    padding: 8px 10px;
     border-radius: 4px;
 }
 
-button:hover {
+/* Navigation hover effect */
+nav a:hover {
     background-color: #003087;
+    text-decoration: none;
 }
 
+/* Main content container */
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Main page heading */
+h1 {
+    color: #003087;
+    margin-bottom: 10px;
+}
+
+/* Section headings */
+h2 {
+    color: #005eb8;
+    margin-top: 30px;
+}
+
+/* Paragraph formatting */
+p {
+    max-width: 900px;
+}
+
+/* Horizontal divider line */
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 28px 0;
+}
+
+/* General form styling */
+form {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #eef4fb;
+    border-radius: 8px;
+}
+
+/* Form labels */
+label {
+    font-weight: bold;
+}
+
+/* Form input fields */
+input,
+select {
+    padding: 9px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+/* Shared button styling */
+button,
+.button,
+.details-button {
+    background-color: #005eb8;
+    color: white;
+    padding: 9px 14px;
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+button:hover,
+.button:hover,
+.details-button:hover {
+    background-color: #003087;
+    color: white;
+    text-decoration: none;
+}
+
+/* Standard link styling */
 a {
     color: #005eb8;
     font-weight: bold;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 25px 0;
+/* Table layout styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    margin-bottom: 30px;
 }
 
-/* Format provider names */
-.provider-name {
-    text-transform: capitalize;
-    font-weight: 500;
-}
-
-/* Details button styling */
-.details-button {
+/* Table header cells */
+th {
     background-color: #005eb8;
     color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
+    padding: 12px;
+    text-align: left;
 }
 
-/* Hover effect for details button */
-.details-button:hover {
-    background-color: #003087;
+/* Table body cells */
+td {
+    border: 1px solid #ddd;
+    padding: 11px;
+}
+
+/* Alternate row colors */
+tr:nth-child(even) {
+    background-color: #f2f6fb;
+}
+
+/* Row hover highlight */
+tr:hover {
+    background-color: #e8f1f8;
+}
+
+/* Provider name formatting */
+.provider-name {
+    font-weight: bold;
+}
+
+/* Error message styling */
+.error-message {
+    background-color: #fdecea;
+    color: #8a1f11;
+    padding: 12px;
+    border-left: 5px solid #d5281b;
+    border-radius: 4px;
+}
+
+/* Informational message box */
+.info-box {
+    background-color: #eef4fb;
+    border-left: 5px solid #005eb8;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+}
+
+/* Empty-state message styling */
+.empty-state {
+    background-color: #fff7e6;
+    border-left: 5px solid #ffb81c;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+/* Responsive card grid layout */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin: 20px 0;
+}
+
+/* Individual feature card */
+.card {
+    background-color: #eef4fb;
+    padding: 18px;
+    border-radius: 8px;
+    border-left: 5px solid #005eb8;
+}
+
+/* Card heading */
+.card h3 {
+    margin-top: 0;
+    color: #003087;
+}
+
+/* Pagination container */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Provider filter form with two fields per row */
+.provider-filter-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 30px;
+    align-items: end;
+}
+
+/* Each provider filter field */
+.filter-field {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Provider filter labels */
+.filter-field label {
+    margin-bottom: 6px;
+}
+
+/* Provider filter inputs and dropdowns */
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Provider filter button row */
+.provider-filter-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Compare page form layout */
+.compare-form {
+    display: block;
+}
+
+/* Each compare dropdown row */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Compare form labels */
+.form-row label {
+    width: 120px;
+}
+
+/* Compare form dropdowns */
+.form-row select {
+    flex: 1;
+}
+
+/* Compare form button row */
+.form-actions {
+    margin-left: 120px;
+    display: flex;
+    gap: 12px;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 700px) {
+
+    /* Stack navigation vertically on mobile */
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+    }
+
+    /* Reduce content padding on mobile */
+    main {
+        width: 92%;
+        padding: 20px;
+    }
+
+    /* Stack provider filter fields */
+    .provider-filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack provider filter buttons */
+    .provider-filter-actions {
+        flex-direction: column;
+    }
+
+    /* Stack compare form rows */
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Full-width compare labels */
+    .form-row label {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    /* Remove compare button indentation */
+    .form-actions {
+        margin-left: 0;
+        flex-direction: column;
+    }
+
+    /* Full-width form controls on mobile */
+    input,
+    select,
+    button,
+    .button {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    /* Smaller table text on mobile */
+    table {
+        font-size: 14px;
+    }
 }

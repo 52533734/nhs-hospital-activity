@@ -1,143 +1,210 @@
-<!-- Extend the shared base layout -->
 {% extends "base.html" %}
 
-<!-- Start page content block -->
+<!-- Start of content block -->
 {% block content %}
 
-<!-- Page heading -->
+<!-- Main page heading -->
 <h1>NHS Providers</h1>
 
-<!-- Search and filter form -->
-<form method="GET" action="{{ url_for('main.providers') }}">
+<!-- Information box explaining page purpose -->
+<p class="info-box">
+    Use the filters below to search providers by name, region, admissions,
+    or outpatient attendance.
+</p>
 
-    <!-- Search by provider name -->
-    <label>Provider name:</label>
-    <input
-        type="text"
-        name="search"
-        value="{{ search }}"
-        placeholder="Search provider"
-    >
+<!-- Provider search and filter form -->
+<form class="provider-filter-form" method="GET" action="{{ url_for('main.providers') }}">
 
-    <!-- Filter by region -->
-    <label>Region:</label>
-    <select name="region">
-        
-        <option value="">All regions</option>
+    <!-- Provider name filter field -->
+    <div class="filter-field">
 
-        {% for region in regions %}
+        <!-- Provider name label -->
+        <label>
+            Provider name:
+        </label>
 
-            <option
-                value="{{ region.id }}"
-                {% if selected_region|string == region.id|string %}
-                    selected
-                {% endif %}
-            >
+        <!-- Provider name search input -->
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search provider"
+        >
 
-                {{ region.region_name }}
+    </div>
 
+    <!-- Region filter field -->
+    <div class="filter-field">
+
+        <!-- Region dropdown label -->
+        <label>
+            Region:
+        </label>
+
+        <!-- Region dropdown menu -->
+        <select name="region">
+
+            <!-- Default region option -->
+            <option value="">
+                All regions
             </option>
 
-        {% endfor %}
+            <!-- Loop through all regions -->
+            {% for region in regions %}
 
-    </select>
+                <!-- Region dropdown option -->
+                <option
+                    value="{{ region.id }}"
 
-    <!-- Filter by minimum admissions -->
-    <label>Minimum admissions:</label>
-    <input
-        type="number"
-        name="min_admissions"
-        value="{{ min_admissions or '' }}"
-        placeholder="e.g. 1000"
-    >
+                    {% if selected_region|string == region.id|string %}
+                        selected
+                    {% endif %}
+                >
 
-    <!-- Filter by minimum outpatient attendance -->
-    <label>Minimum outpatient attendance:</label>
-    <input
-        type="number"
-        name="min_outpatients"
-        value="{{ min_outpatients or '' }}"
-        placeholder="e.g. 5000"
-    >
+                    <!-- Display formatted region name -->
+                    {{ region.region_name.title() }}
 
-    <!-- Submit filters -->
-    <button type="submit">Apply Filters</button>
+                </option>
 
-    <!-- Reset filters -->
-    <a href="{{ url_for('main.providers') }}">Clear</a>
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <!-- Minimum admissions filter field -->
+    <div class="filter-field">
+
+        <!-- Minimum admissions label -->
+        <label>
+            Minimum admissions:
+        </label>
+
+        <!-- Minimum admissions input -->
+        <input
+            type="number"
+            name="min_admissions"
+            value="{{ min_admissions or '' }}"
+            placeholder="e.g. 1000"
+        >
+
+    </div>
+
+    <!-- Minimum outpatient attendance filter field -->
+    <div class="filter-field">
+
+        <!-- Minimum outpatient attendance label -->
+        <label>
+            Minimum outpatient attendance:
+        </label>
+
+        <!-- Minimum outpatient attendance input -->
+        <input
+            type="number"
+            name="min_outpatients"
+            value="{{ min_outpatients or '' }}"
+            placeholder="e.g. 5000"
+        >
+
+    </div>
+
+    <!-- Filter action buttons -->
+    <div class="provider-filter-actions">
+
+        <!-- Submit filter button -->
+        <button type="submit">
+            Apply Filters
+        </button>
+
+        <!-- Clear filter button -->
+        <a class="button" href="{{ url_for('main.providers') }}">
+            Clear
+        </a>
+
+    </div>
 
 </form>
 
-<!-- Provider data table -->
-<table border="1">
+<!-- Check if no providers are returned -->
+{% if providers.items|length == 0 %}
+
+    <!-- Empty state message -->
+    <div class="empty-state">
+
+        <!-- Main empty state heading -->
+        <strong>No providers found.</strong>
+
+        <!-- Suggestion message -->
+        <p>Try changing or clearing your filters.</p>
+    </div>
+
+{% else %}
+
+<!-- Table displaying provider information -->
+<table>
 
     <!-- Table header row -->
     <tr>
 
+        <!-- Provider name column -->
         <th>Provider Name</th>
 
+        <!-- Region column -->
         <th>Region</th>
 
+        <!-- Details column -->
         <th>Details</th>
-        
     </tr>
 
-    <!-- Loop through paginated providers -->
-     
+    <!-- Loop through providers on current page -->
     {% for provider in providers.items %}
 
+    <!-- Table row for each provider -->
     <tr>
 
-        <!-- Display provider name -->
+        <!-- Provider name cell -->
         <td class="provider-name">
-
-            {{ provider.org_name.lower() }}
-
+            {{ provider.org_name }}
         </td>
 
-        <!-- Display provider region -->
+        <!-- Provider region cell -->
         <td>
 
-            <!-- Check if region exists -->
-
+            <!-- Check if provider has a region -->
             {% if provider.region %}
 
-                {{ provider.region.region_name }}
+                <!-- Display region name -->
+                {{ provider.region.region_name.title() }}
 
             {% else %}
 
+                <!-- Display fallback text -->
                 Unknown
 
             {% endif %}
-
         </td>
 
-        
+        <!-- Provider details link cell -->
         <td>
-            <!-- Link to provider detail page -->
 
+            <!-- Link to provider details page -->
             <a class="details-button" href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
                 View Details
             </a>
-
         </td>
-
     </tr>
 
     {% endfor %}
-
 </table>
 
-<br>
-
 <!-- Pagination controls -->
-<div>
+<div class="pagination">
 
-    <!-- Show previous page link -->
-
+    <!-- Show previous button if previous page exists -->
     {% if providers.has_prev %}
 
-        <a href="{{ url_for(
+        <!-- Previous page link -->
+        <a class="button" href="{{ url_for(
             'main.providers',
             page=providers.prev_num,
             search=search,
@@ -150,15 +217,14 @@
 
     {% endif %}
 
-    <!-- Display current page number -->
+    <!-- Current page information -->
+    <span>Page {{ providers.page }} of {{ providers.pages }}</span>
 
-    Page {{ providers.page }} of {{ providers.pages }}
-
-    <!-- Show next page link -->
-
+    <!-- Show next button if next page exists -->
     {% if providers.has_next %}
 
-        <a href="{{ url_for(
+        <!-- Next page link -->
+        <a class="button" href="{{ url_for(
             'main.providers',
             page=providers.next_num,
             search=search,
@@ -173,5 +239,7 @@
 
 </div>
 
-<!-- End content block -->
+{% endif %}
+
+<!-- End of content block -->
 {% endblock %}

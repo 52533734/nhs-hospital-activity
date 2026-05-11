@@ -1,202 +1,220 @@
-<!-- Extend shared base layout -->
+<!-- Extend the shared base template -->
 {% extends "base.html" %}
 
-<!-- Start page content -->
+<!-- Start of content block -->
 {% block content %}
 
-<!-- Page heading -->
+<!-- Main page heading -->
 <h1>Compare NHS Providers</h1>
 
-<!-- Provider selection form -->
-<form method="GET" action="{{ url_for('main.compare') }}">
+<!-- Information box explaining comparison feature -->
+<p class="info-box">
+    Select two or three providers to compare their admissions,
+    outpatient attendance, and DNA appointments.
+</p>
 
-    <!-- First provider dropdown -->
-    <label>Provider 1:</label>
-    <!-- Provider 1 dropdown -->
-    <select name="provider1" id="provider1">
+<!-- Provider comparison form using GET request -->
+<form class="compare-form" method="GET" action="{{ url_for('main.compare') }}">
 
-        <!-- Default option -->
-        <option value="">
-            Select provider
-        </option>
+    <!-- First provider form row -->
+    <div class="form-row">
 
-        <!-- Loop through all providers -->
-        {% for provider in providers %}
+        <!-- Provider 1 label -->
+        <label>Provider 1:</label>
 
-            <!-- Provider option -->
-            <option
-                value="{{ provider.id }}"
+        <!-- Dropdown for first provider -->
+        <select name="provider1" id="provider1">
 
-                {% if provider1_id == provider.id %}
-                    selected
-                {% endif %}
+            <!-- Default dropdown option -->
+            <option value="">Select provider</option>
 
-                {% if provider.id == provider2_id or provider.id == provider3_id %}
-                    disabled
-                {% endif %}
-            >
+            <!-- Loop through all providers -->
+            {% for provider in providers %}
 
-                {{ provider.org_name }}
+                <!-- Provider option for first dropdown -->
+                <option
+                    value="{{ provider.id }}"
+                    {% if provider1_id == provider.id %}
+                        selected
+                    {% endif %}
+                    {% if provider.id == provider2_id or provider.id == provider3_id %}
+                        disabled
+                    {% endif %}
+                >
+                    {{ provider.org_name }}
+                </option>
 
-            </option>
+            {% endfor %}
 
-        {% endfor %}
+        </select>
 
-    </select>
+    </div>
 
+    <!-- Second provider form row -->
+    <div class="form-row">
 
-    <!-- Provider 2 dropdown -->
-    <select name="provider2" id="provider2">
+        <!-- Provider 2 label -->
+        <label>Provider 2:</label>
 
-        <!-- Default option -->
-        <option value="">
-            Select provider
-        </option>
+        <!-- Dropdown for second provider -->
+        <select name="provider2" id="provider2">
 
-        <!-- Loop through all providers -->
-        {% for provider in providers %}
+            <!-- Default dropdown option -->
+            <option value="">Select provider</option>
 
-            <!-- Provider option -->
-            <option
-                value="{{ provider.id }}"
+            <!-- Loop through all providers -->
+            {% for provider in providers %}
 
-                {% if provider2_id == provider.id %}
-                    selected
-                {% endif %}
+                <!-- Provider option for second dropdown -->
+                <option
+                    value="{{ provider.id }}"
+                    {% if provider2_id == provider.id %}
+                        selected
+                    {% endif %}
+                    {% if provider.id == provider1_id or provider.id == provider3_id %}
+                        disabled
+                    {% endif %}
+                >
+                    {{ provider.org_name }}
+                </option>
 
-                {% if provider.id == provider1_id or provider.id == provider3_id %}
-                    disabled
-                {% endif %}
-            >
+            {% endfor %}
 
-                {{ provider.org_name }}
+        </select>
 
-            </option>
+    </div>
 
-        {% endfor %}
+    <!-- Third provider form row -->
+    <div class="form-row">
 
-    </select>
+        <!-- Provider 3 label -->
+        <label>Provider 3:</label>
 
+        <!-- Optional dropdown for third provider -->
+        <select name="provider3" id="provider3">
 
-    <!-- Provider 3 dropdown -->
-    <select name="provider3" id="provider3">
+            <!-- Default optional dropdown option -->
+            <option value="">Optional provider</option>
 
-        <!-- Default option -->
-        <option value="">
-            Optional provider
-        </option>
+            <!-- Loop through all providers -->
+            {% for provider in providers %}
 
-        <!-- Loop through all providers -->
-        {% for provider in providers %}
+                <!-- Provider option for third dropdown -->
+                <option
+                    value="{{ provider.id }}"
+                    {% if provider3_id == provider.id %}
+                        selected
+                    {% endif %}
+                    {% if provider.id == provider1_id or provider.id == provider2_id %}
+                        disabled
+                    {% endif %}
+                >
+                    {{ provider.org_name }}
+                </option>
 
-            <!-- Provider option -->
-            <option
-                value="{{ provider.id }}"
+            {% endfor %}
 
-                {% if provider3_id == provider.id %}
-                    selected
-                {% endif %}
+        </select>
 
-                {% if provider.id == provider1_id or provider.id == provider2_id %}
-                    disabled
-                {% endif %}
-            >
+    </div>
 
-                {{ provider.org_name }}
+    <!-- Form button row -->
+    <div class="form-actions">
 
-            </option>
+        <!-- Submit button to compare selected providers -->
+        <button type="submit">Compare</button>
 
-        {% endfor %}
+        <!-- Link button to clear selected providers -->
+        <a class="button" href="{{ url_for('main.compare') }}">Clear</a>
 
-    </select>
-
-    <!-- Submit comparison -->
-    <button type="submit">Compare</button>
-
-    <!-- Reset comparison -->
-    <a href="{{ url_for('main.compare') }}">Clear</a>
+    </div>
 
 </form>
 
-<hr>
+<!-- Display error message if one exists -->
+{% if error_message %}
 
-<!-- Show validation error message -->
-{% if error %}
-
-    <!-- Error text -->
+    <!-- Error message paragraph -->
     <p class="error-message">
-        {{ error }}
+        {{ error_message }}
     </p>
 
-{% endif %}
+<!-- Display empty state if no providers are selected -->
+{% elif selected_providers|length == 0 %}
 
-<!-- Show message before providers are selected -->
-{% if selected_providers|length == 0 %}
-
-    <p>Please select two or three providers to compare.</p>
+    <!-- Empty state message -->
+    <div class="empty-state">
+        Please select two or three providers to compare.
+    </div>
 
 {% else %}
 
-    <!-- Comparison table -->
-    <table>
+<!-- Comparison table -->
+<table>
 
-        <!-- Provider name row -->
-        <tr>
-            <th>Metric</th>
+    <!-- Table header row -->
+    <tr>
+        <th>Metric</th>
 
-            {% for provider in selected_providers %}
-                <th>{{ provider.name }}</th>
-            {% endfor %}
-        </tr>
+        <!-- Create a column for each selected provider -->
+        {% for provider in selected_providers %}
+            <th>{{ provider.name }}</th>
+        {% endfor %}
+    </tr>
 
-        <!-- Region comparison row -->
-        <tr>
-            <td>Region</td>
+    <!-- Region comparison row -->
+    <tr>
+        <td>Region</td>
 
-            {% for provider in selected_providers %}
-                <td>{{ provider.region }}</td>
-            {% endfor %}
-        </tr>
+        <!-- Display region for each selected provider -->
+        {% for provider in selected_providers %}
+            <td>{{ provider.region.title() }}</td>
+        {% endfor %}
+    </tr>
 
-        <!-- Elective admissions comparison row -->
-        <tr>
-            <td>Elective Admissions</td>
+    <!-- Elective admissions comparison row -->
+    <tr>
+        <td>Elective Admissions</td>
 
-            {% for provider in selected_providers %}
-                <td>{{ provider.elective_admissions }}</td>
-            {% endfor %}
-        </tr>
+        <!-- Display elective admissions for each selected provider -->
+        {% for provider in selected_providers %}
+            <td>{{ provider.elective_admissions }}</td>
+        {% endfor %}
+    </tr>
 
-        <!-- Emergency admissions comparison row -->
-        <tr>
-            <td>Emergency Admissions</td>
+    <!-- Emergency admissions comparison row -->
+    <tr>
+        <td>Emergency Admissions</td>
 
-            {% for provider in selected_providers %}
-                <td>{{ provider.emergency_admissions }}</td>
-            {% endfor %}
-        </tr>
+        <!-- Display emergency admissions for each selected provider -->
+        {% for provider in selected_providers %}
+            <td>{{ provider.emergency_admissions }}</td>
+        {% endfor %}
+    </tr>
 
-        <!-- Outpatient attendance comparison row -->
-        <tr>
-            <td>Outpatient Attendance</td>
+    <!-- Outpatient attendance comparison row -->
+    <tr>
+        <td>Outpatient Attendance</td>
 
-            {% for provider in selected_providers %}
-                <td>{{ provider.outpatient_attendance }}</td>
-            {% endfor %}
-        </tr>
+        <!-- Display outpatient attendance for each selected provider -->
+        {% for provider in selected_providers %}
+            <td>{{ provider.outpatient_attendance }}</td>
+        {% endfor %}
+    </tr>
 
-        <!-- DNA appointments comparison row -->
-        <tr>
-            <td>DNA Appointments</td>
+    <!-- DNA appointments comparison row -->
+    <tr>
+        <td>DNA Appointments</td>
 
-            {% for provider in selected_providers %}
-                <td>{{ provider.dna_appointments }}</td>
-            {% endfor %}
-        </tr>
+        <!-- Display DNA appointments for each selected provider -->
+        {% for provider in selected_providers %}
+            <td>{{ provider.dna_appointments }}</td>
+        {% endfor %}
+    </tr>
 
-    </table>
+</table>
 
 {% endif %}
 
-<!-- End page content -->
+<!-- End of content block -->
 {% endblock %}

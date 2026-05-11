@@ -3,47 +3,40 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Website title -->
+    <!-- Title displayed in the browser tab -->
     <title>NHS Hospital Activity Explorer</title>
 
-    <!-- External CSS stylesheet -->
+    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
 </head>
 
 <body>
 
-    <!-- Website navigation menu -->
+    <!-- Navigation menu section -->
     <nav>
+        <!-- Link to Home page -->
+        <a href="{{ url_for('main.home') }}">Home</a>
 
-        <!-- Homepage link -->
-        <a href="/">Home</a>
+        <!-- Link to Providers page -->
+        <a href="{{ url_for('main.providers') }}">Providers</a>
 
-        <!-- Providers page link -->
-        <a href="/providers">Providers</a>
+        <!-- Link to Analytics page -->
+        <a href="{{ url_for('main.analytics') }}">Analytics</a>
 
-        <!-- Analytics dashboard link -->
-        <a href="/analytics">Analytics</a>
-
-        <!-- Comparison page link -->
-        <a href="/compare">Compare</a>
-
+        <!-- Link to Compare page -->
+        <a href="{{ url_for('main.compare') }}">Compare</a>
     </nav>
 
-    <hr>
-
-    <!-- Main content container -->
+    <!-- Main content area -->
     <main>
-
-        <!-- Dynamic page content -->
+        <!-- Jinja block where child templates insert content -->
         {% block content %}
-        {% endblock %}
 
+        <!-- End of content block -->
+        {% endblock %}
     </main>
 
 </body>
