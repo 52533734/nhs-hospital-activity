@@ -1,6 +1,12 @@
 from flask import Blueprint, render_template, request
 from app import db
 from app.models import Provider, Region, MonthlyActivity
+from app.services import (
+    top_10_busiest_providers,
+    average_emergency_by_region,
+    highest_outpatient_attendance,
+    highest_dna_appointments
+)
 
 main = Blueprint("main", __name__)
 
@@ -78,4 +84,21 @@ def provider_detail(provider_id):
         "provider_detail.html",
         provider=provider,
         activities=activities
+    )
+
+@main.route("/analytics")
+def analytics():
+    # Load analytics results
+    busiest_providers = top_10_busiest_providers()
+    emergency_by_region = average_emergency_by_region()
+    outpatient_attendance = highest_outpatient_attendance()
+    dna_appointments = highest_dna_appointments()
+
+    # Send analytics data to template
+    return render_template(
+        "analytics.html",
+        busiest_providers=busiest_providers,
+        emergency_by_region=emergency_by_region,
+        outpatient_attendance=outpatient_attendance,
+        dna_appointments=dna_appointments
     )

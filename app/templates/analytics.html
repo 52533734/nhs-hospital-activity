@@ -1,0 +1,139 @@
+<!-- Extend the shared base layout -->
+{% extends "base.html" %}
+
+<!-- Start content block -->
+{% block content %}
+
+<!-- Main dashboard heading -->
+<h1>Analytics Dashboard</h1>
+
+<!-- Section heading for busiest providers -->
+<h2>Top 10 Busiest Providers by Admissions</h2>
+
+<!-- Table showing providers with highest admissions -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total Admissions</th>
+    </tr>
+
+    <!-- Loop through busiest provider records -->
+    {% for provider in busiest_providers %}
+
+    <tr>
+
+        <!-- Display provider name -->
+        <td>{{ provider.org_name }}</td>
+
+        <!-- Display provider region -->
+        <td>{{ provider.region_name }}</td>
+
+        <!-- Display total admissions -->
+        <td>{{ provider.total_admissions }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for emergency admissions -->
+<h2>Average Emergency Admissions by Region</h2>
+
+<!-- Table showing average emergency admissions -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Region</th>
+        <th>Average Emergency Admissions</th>
+    </tr>
+
+    <!-- Loop through regional emergency data -->
+    {% for region in emergency_by_region %}
+
+    <tr>
+
+        <!-- Display region name -->
+        <td>{{ region.region_name }}</td>
+
+        <!-- Display formatted emergency average -->
+        <td>{{ "%.2f"|format(region.average_emergency) }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for outpatient attendance -->
+<h2>Highest Outpatient Attendance</h2>
+
+<!-- Table showing outpatient attendance -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total Outpatients</th>
+    </tr>
+
+    <!-- Loop through outpatient attendance data -->
+    {% for provider in outpatient_attendance %}
+
+    <tr>
+
+        <!-- Display provider name -->
+        <td>{{ provider.org_name }}</td>
+
+        <!-- Display provider region -->
+        <td>{{ provider.region_name }}</td>
+
+        <!-- Display outpatient totals -->
+        <td>{{ provider.total_outpatients }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for DNA appointments -->
+<h2>Highest DNA Appointments</h2>
+
+<!-- Table showing missed appointments -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total DNA Appointments</th>
+    </tr>
+
+    <!-- Loop through DNA appointment data -->
+    {% for provider in dna_appointments %}
+
+    <tr>
+
+        <!-- Display provider name -->
+        <td>{{ provider.org_name }}</td>
+
+        <!-- Display provider region -->
+        <td>{{ provider.region_name }}</td>
+
+        <!-- Display total DNA appointments -->
+        <td>{{ provider.total_dna }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- End content block -->
+{% endblock %}
