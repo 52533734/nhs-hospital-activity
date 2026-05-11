@@ -1,0 +1,69 @@
+<!-- Extend base layout -->
+{% extends "base.html" %}
+
+<!-- Start content block -->
+{% block content %}
+
+<!-- Provider heading -->
+<h1>{{ provider.org_name }}</h1>
+
+<!-- Provider region -->
+<p>
+
+    <strong>Region:</strong>
+
+    {% if provider.region %}
+        {{ provider.region.region_name }}
+    {% else %}
+        Unknown
+    {% endif %}
+
+</p>
+
+<hr>
+
+<!-- Monthly activity table -->
+<h2>Monthly Activity</h2>
+
+<table border="1">
+
+    <!-- Table headings -->
+    <tr>
+        <th>Month</th>
+        <th>Total Admissions</th>
+        <th>Outpatient Attendance</th>
+        <th>DNA Appointments</th>
+    </tr>
+
+    <!-- Loop through provider activity -->
+    {% for activity in activities %}
+
+    <tr>
+
+        <!-- Activity month -->
+        <td>{{ activity.activity_month }}</td>
+
+        <!-- Total admissions -->
+        <td>{{ activity.total_admissions }}</td>
+
+        <!-- Total outpatient attendance -->
+        <td>{{ activity.total_outpatient_attendance }}</td>
+
+        <!-- Total missed appointments -->
+        <td>{{ activity.dna_total }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<br>
+
+<!-- Back link -->
+<a href="{{ url_for('main.providers') }}">
+    Back to providers list
+</a>
+
+<!-- End content block -->
+{% endblock %}

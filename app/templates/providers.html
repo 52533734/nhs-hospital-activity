@@ -1,0 +1,88 @@
+<!-- Extend the shared base layout -->
+{% extends "base.html" %}
+
+<!-- Start page content block -->
+{% block content %}
+
+<!-- Page heading -->
+<h1>NHS Providers</h1>
+
+<!-- Provider data table -->
+<table border="1">
+
+    <!-- Table header row -->
+    <tr>
+        <th>Provider Name</th>
+        <th>Region</th>
+        <th>Details</th>
+    </tr>
+
+    <!-- Loop through paginated providers -->
+    {% for provider in providers.items %}
+
+    <tr>
+
+        <!-- Display provider name -->
+        <td>{{ provider.org_name }}</td>
+
+        <!-- Display provider region -->
+        <td>
+
+            <!-- Check if region exists -->
+            {% if provider.region %}
+
+                {{ provider.region.region_name }}
+
+            {% else %}
+
+                Unknown
+
+            {% endif %}
+
+        </td>
+
+        
+        <td>
+            <!-- Link to provider detail page -->
+            <a href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
+                View details
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<br>
+
+<!-- Pagination controls -->
+<div>
+
+    <!-- Show previous page link -->
+    {% if providers.has_prev %}
+
+        <a href="{{ url_for('main.providers', page=providers.prev_num) }}">
+            Previous
+        </a>
+
+    {% endif %}
+
+    <!-- Display current page number -->
+    Page {{ providers.page }} of {{ providers.pages }}
+
+    <!-- Show next page link -->
+    {% if providers.has_next %}
+
+        <a href="{{ url_for('main.providers', page=providers.next_num) }}">
+            Next
+        </a>
+
+    {% endif %}
+
+</div>
+
+<!-- End content block -->
+{% endblock %}
