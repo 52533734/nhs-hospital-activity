@@ -67,6 +67,75 @@
 
 </table>
 
+<!-- Section heading for highest DNA rate age groups -->
+<h2>Highest DNA Rate Age Groups</h2>
+
+<!-- Table showing age groups with highest DNA rates -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through highest DNA rate age groups -->
+    {% for age in age_cases.worst %}
+
+    <!-- Table row for each age group -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for lowest DNA rate age groups -->
+<h2>Lowest DNA Rate Age Groups</h2>
+
+<!-- Table showing age groups with lowest DNA rates -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through lowest DNA rate age groups -->
+    {% for age in age_cases.best %}
+
+    <!-- Table row for each age group -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Information box explaining age-based DNA comparisons -->
+<div class="info-box">
+    Comparing highest and lowest DNA rates by age group helps identify which patient groups
+    are more likely to miss appointments and which groups have stronger attendance patterns.
+</div>
+
+
 <!-- Section heading for full summary -->
 <h2>Age Band Activity Summary</h2>
 
