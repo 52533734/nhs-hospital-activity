@@ -73,7 +73,6 @@ def providers():
     # Load provider performance rankings
     performance_rankings = provider_performance_rankings()
 
-
     return render_template(
         "providers.html",
         providers=providers,
@@ -84,6 +83,7 @@ def providers():
         min_outpatients=min_outpatients,
         performance_rankings=performance_rankings
     )
+
 
 @main.route("/providers/<int:provider_id>")
 def provider_detail(provider_id):
@@ -100,6 +100,7 @@ def provider_detail(provider_id):
         provider=provider,
         activities=activities
     )
+
 
 @main.route("/analytics")
 def analytics():
@@ -133,7 +134,6 @@ def analytics():
         specialty_rates=specialty_rates,
         totals=totals
     )
-
 
 
 @main.route("/compare")
@@ -185,6 +185,7 @@ def compare():
         provider3_id=provider3_id,
         error_message=error_message
     )
+
 
 @main.route("/age-analytics")
 def age_analytics():
