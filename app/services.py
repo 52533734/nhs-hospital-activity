@@ -153,3 +153,16 @@ def highest_emergency_age_bands():
     ).order_by(
         db.desc("total_emergency")
     ).limit(10).all()
+
+def dashboard_totals():
+    #Calculate overall dashboard totals
+    return {
+        "providers": Provider.query.count(),
+        "regions": Region.query.count(),
+        "total_admissions": db.session.query(
+            db.func.sum(MonthlyActivity.all_elective_total + MonthlyActivity.all_non_elective)
+        ).scalar() or 0,
+        "total_dna": db.session.query(
+            db.func.sum(MonthlyActivity.all_first_dna + MonthlyActivity.all_subsequent_dna)
+        ).scalar() or 0
+    }

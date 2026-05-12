@@ -8,7 +8,8 @@ from app.services import (
     highest_dna_appointments,
     age_band_summary,
     age_band_dna_rates,
-    highest_emergency_age_bands
+    highest_emergency_age_bands,
+    dashboard_totals
 )
 from app.services import provider_summary
 
@@ -98,14 +99,19 @@ def analytics():
     outpatient_attendance = highest_outpatient_attendance()
     dna_appointments = highest_dna_appointments()
 
+    # Load dashboard summary totals
+    totals = dashboard_totals()
+
     # Send analytics data to template
     return render_template(
         "analytics.html",
         busiest_providers=busiest_providers,
         emergency_by_region=emergency_by_region,
         outpatient_attendance=outpatient_attendance,
-        dna_appointments=dna_appointments
+        dna_appointments=dna_appointments,
+        totals=totals
     )
+
 
 
 @main.route("/compare")
