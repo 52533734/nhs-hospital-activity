@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+<!-- Start of content block -->
+{% block content %}
+
+<!-- Main page heading -->
+<h1>Age-Based Analytics</h1>
+
+<!-- Information box explaining page purpose -->
+<p class="info-box">
+    This page analyses NHS hospital activity by patient age group,
+    including emergency activity, outpatient appointments, and missed appointments.
+</p>
+
+<!-- Section heading for emergency activity -->
+<h2>Highest Emergency Activity by Age Band</h2>
+
+<!-- Emergency age-band table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Age Band</th>
+        <th>Total Emergency Activity</th>
+    </tr>
+
+    <!-- Loop through emergency age-band results -->
+    {% for age in emergency_age_bands %}
+
+    <!-- Table row for each age band -->
+    <tr>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_emergency }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for DNA rates -->
+<h2>DNA Appointment Rate by Age Band</h2>
+
+<!-- DNA rate table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through DNA rate data -->
+    {% for age in dna_rates %}
+
+    <!-- Table row for each age band -->
+    <tr>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for full summary -->
+<h2>Age Band Activity Summary</h2>
+
+<!-- Full age-band summary table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Age Band</th>
+        <th>Emergency</th>
+        <th>Total Appointments</th>
+        <th>Attended Appointments</th>
+        <th>DNA Appointments</th>
+    </tr>
+
+    <!-- Loop through age summary data -->
+    {% for age in age_summary %}
+
+    <!-- Table row for each age band -->
+    <tr>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_emergency }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.attended_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- End of content block -->
+{% endblock %}
