@@ -12,6 +12,35 @@
     outpatient attendance, emergency activity, and missed appointments.
 </p>
 
+<!-- Dashboard summary cards -->
+<div class="card-grid">
+
+    <!-- Provider count card -->
+    <div class="card">
+        <h3>Total Providers</h3>
+        <p>{{ totals.providers }}</p>
+    </div>
+
+    <!-- Region count card -->
+    <div class="card">
+        <h3>Total Regions</h3>
+        <p>{{ totals.regions }}</p>
+    </div>
+
+    <!-- Admission total card -->
+    <div class="card">
+        <h3>Total Admissions</h3>
+        <p>{{ totals.total_admissions }}</p>
+    </div>
+
+    <!-- DNA total card -->
+    <div class="card">
+        <h3>Total DNA Appointments</h3>
+        <p>{{ totals.total_dna }}</p>
+    </div>
+
+</div>
+
 <!-- Section heading for busiest providers -->
 <h2>Top 10 Busiest Providers by Admissions</h2>
 
