@@ -42,6 +42,81 @@
 
 </div>
 
+<!-- Section heading for best-performing providers -->
+<h2>Best Performing Providers</h2>
+
+<!-- Table showing top provider rankings -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>DNA Rate</th>
+        <th>Performance Score</th>
+    </tr>
+
+    <!-- Loop through best-performing providers -->
+    {% for provider in provider_cases.best %}
+
+    <!-- Table row for each provider -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ provider.org_name }}</td>
+        <td>{{ provider.region_name.title() }}</td>
+        <td>{{ provider.dna_rate }}%</td>
+        <td>{{ provider.performance_score }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Information box explaining ranking logic -->
+<div class="info-box">
+    Best-performing providers are ranked using a simple score based on lower DNA rates
+    and higher admission activity. This gives a basic indication of strong appointment
+    attendance and service activity.
+</div>
+
+<!-- Section heading for worst-performing providers -->
+<h2>Worst Performing Providers by DNA Rate</h2>
+
+<!-- Table showing worst provider rankings -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>DNA Rate</th>
+        <th>Total DNA</th>
+    </tr>
+
+    <!-- Loop through worst-performing providers -->
+    {% for provider in provider_cases.worst %}
+
+    <!-- Table row for each provider -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ provider.org_name }}</td>
+        <td>{{ provider.region_name.title() }}</td>
+        <td>{{ provider.dna_rate }}%</td>
+        <td>{{ provider.total_dna }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Information box explaining worst-case providers -->
+<div class="info-box">
+    Worst-case providers show higher missed appointment rates. These results may indicate
+    possible access barriers, scheduling issues, or differences in patient attendance behaviour.
+</div>
+
 <!-- Section heading for busiest providers -->
 <h2>Top 10 Busiest Providers by Admissions</h2>
 

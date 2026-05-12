@@ -167,8 +167,9 @@
     <tr>
 
         <!-- Provider rank cell -->
-        <td>{{ loop.index }}</td>
-
+        <td>
+            {{ loop.index + ((providers.page - 1) * providers.per_page) }}
+        </td>
         <!-- Provider name cell -->
         <td class="provider-name">
             {{ provider.org_name }}
