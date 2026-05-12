@@ -242,3 +242,40 @@ def best_and_worst_providers():
         "best": rankings[:10],
         "worst": rankings[-10:][::-1]
     }
+
+
+def specialty_summary():
+    # Summarise activity by treatment speciality
+    return db.session.query(
+        TreatmentSpecialty.specialty_name.label("speciality_name"),
+        db.func.sum(TreatmentSpecialtyActivity.emergency).label("total_emergency"),
+        db.func.sum(TreatmentSpecialtyActivity.total_appointments).label("total_appoinments"),
+        db.func.sum(TreatmentSpecialtyActivity.attended_appointments).label("attended_appointments"),
+        db.func.sum(TreatmentSpecialtyActivity.dna_appointments).label("dna_appointments")
+    ).join(
+        TreatmentSpecialtyActivity
+    ).group_by(
+        TreatmentSpecialty.id,
+        TreatmentSpecialty.specialty_name
+    ).order_by(
+         db.desc("total_appointments")
+    ).limit(10).all()
+
+
+def specialty_dna_rates():
+    # Calculate DNA rate by treatment specialty
+    rows = specialty_summary()
+
+    # Build specialty DNA rate list
+    return [
+        {
+            "specialty_name": row.specialty_name,
+            "total_appointments": row.total_appointments or 0,
+            "dna_appointments": row.dna_appointments or 0,
+            "dna_rate": round(
+                ((row.dna_appointments or 0) / row.total_appointments) * 100,
+                2
+            ) if row.total_appointments else 0
+        }
+        for row in rows
+    ]
