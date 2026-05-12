@@ -203,6 +203,14 @@ tr:hover {
     color: #003087;
 }
 
+/* Large dashboard metric values */
+.card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #003087;
+    margin-top: 12px;
+}
+
 /* Pagination container */
 .pagination {
     margin-top: 20px;

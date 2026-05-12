@@ -8,8 +8,9 @@
 
 <!-- Information box describing the dashboard -->
 <p class="info-box">
-    This page summarises NHS provider activity using admissions,
-    outpatient attendance, emergency activity, and missed appointments.
+    Analyse NHS provider performance using admissions,
+    emergency activity, outpatient attendance, DNA appointments,
+    and regional healthcare trends.
 </p>
 
 <!-- Dashboard summary cards -->
@@ -66,6 +67,13 @@
 
     {% endfor %}
 </table>
+
+
+<div class="info-box">
+    Providers with the highest admission totals are typically large NHS trusts
+    serving major population centres. These organisations may experience
+    greater pressure on emergency and outpatient services.
+</div>
 
 <!-- Section heading for emergency admissions by region -->
 <h2>Average Emergency Admissions by Region</h2>
@@ -144,6 +152,11 @@
 
     {% endfor %}
 </table>
+
+<div class="info-box">
+    High DNA appointment levels may indicate barriers to healthcare access,
+    scheduling challenges, or differences in patient engagement.
+</div>
 
 <!-- End of content block -->
 {% endblock %}
