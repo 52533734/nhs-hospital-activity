@@ -9,7 +9,12 @@ from app.services import (
     age_band_summary,
     age_band_dna_rates,
     highest_emergency_age_bands,
-    dashboard_totals
+    age_best_and_worst_dna_rates,
+    dashboard_totals,
+    provider_performance_rankings,
+    best_and_worst_providers,
+    specialty_summary,
+    specialty_dna_rates
 )
 from app.services import provider_summary
 
@@ -65,6 +70,10 @@ def providers():
     # Get all regions for dropdown
     regions = Region.query.order_by(Region.region_name).all()
 
+    # Load provider performance rankings
+    performance_rankings = provider_performance_rankings()
+
+
     return render_template(
         "providers.html",
         providers=providers,
@@ -72,7 +81,8 @@ def providers():
         search=search,
         selected_region=region_id,
         min_admissions=min_admissions,
-        min_outpatients=min_outpatients
+        min_outpatients=min_outpatients,
+        performance_rankings=performance_rankings
     )
 
 @main.route("/providers/<int:provider_id>")
@@ -102,6 +112,15 @@ def analytics():
     # Load dashboard summary totals
     totals = dashboard_totals()
 
+    # Load best and worst provider performance
+    provider_cases = best_and_worst_providers()
+
+    # Load specialty activity summary
+    specialties = specialty_summary()
+
+    # Load specialty DNA rates
+    specialty_rates = specialty_dna_rates()
+
     # Send analytics data to template
     return render_template(
         "analytics.html",
@@ -109,6 +128,9 @@ def analytics():
         emergency_by_region=emergency_by_region,
         outpatient_attendance=outpatient_attendance,
         dna_appointments=dna_appointments,
+        provider_cases=provider_cases,
+        specialties=specialties,
+        specialty_rates=specialty_rates,
         totals=totals
     )
 
@@ -175,12 +197,16 @@ def age_analytics():
     #Load highest emergency age bands
     emergency_age_bands = highest_emergency_age_bands()
 
+    # Load best and worst age-band DNA cases
+    age_cases = age_best_and_worst_dna_rates()
+
     #Render age analytics page
     return render_template(
         "age_analytics.html",
         age_summary=age_summary,
         dna_rates=dna_rates,
-        emergency_age_bands=emergency_age_bands
+        emergency_age_bands=emergency_age_bands,
+        age_cases=age_cases
     )
 
 
