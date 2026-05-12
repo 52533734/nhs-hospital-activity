@@ -380,3 +380,76 @@ with app.app_context():
     # Commit age-band records to database
     db.session.commit()
     print("Age-band activity data imported successfully!")
+
+
+    # Load treatment specialty NHS activity data
+    specialty_df = pd.read_csv(
+        "data/HES_M13_2021_OPEN_DATA_TREATMENT_FUNCTION.csv",
+        encoding="latin1"
+    )
+
+    # Standardise specialty column names
+    specialty_df.columns = (
+        specialty_df.columns
+        .str.strip()
+        .str.upper()
+        .str.replace(" ", "_")
+    )
+
+    # Limit specialty rows for assignment size
+    specialty_df = specialty_df.head(2000)
+
+    # Loop through specialty rows
+    for _, row in specialty_df.iterrows():
+
+        # Get specialty code
+        specialty_code = str(row.get("TREATMENT_FUNCTION_CODE", "UNKNOWN")).strip()
+
+        # Get specialty name
+        specialty_name = str(row.get("TREATMENT_FUNCTION_NAME", "Unknown")).strip()
+
+        # Find existing specialty
+        specialty = TreatmentSpecialty.query.filter_by(
+            specialty_code=specialty_code
+        ).first()
+
+        # Create specialty if missing
+        if not specialty:
+            specialty = TreatmentSpecialty(
+                specialty_code=specialty_code,
+                specialty_name=specialty_name
+            )
+
+            # Save specialty before activity link
+            db.session.add(specialty)
+            db.session.flush()
+
+        # Create treatment specialty activity record
+        specialty_activity = TreatmentSpecialtyActivity(
+            specialty=specialty,
+            part_year=safe_int(row.get("PART_YEAR")),
+            month_ending=str(row.get("MONTH_ENDING", "")),
+            fy_start_date=str(row.get("FY_START_DATE", "")),
+            fy_end_date=str(row.get("FY_END_DATE", "")),
+            fce=safe_int(row.get("FCE")),
+            fces_with_procedure=safe_int(row.get("FCES_WITH_PROCEDURE")),
+            ordinary_admission_episodes=safe_int(row.get("ORDINARY_ADMISSION_EPISODES")),
+            fce_day_cases=safe_int(row.get("FCE_DAY_CASES")),
+            fce_day_with_procedure=safe_int(row.get("FCE_DAY_WITH_PROCEDURE")),
+            fae=safe_int(row.get("FAE")),
+            emergency=safe_int(row.get("EMERGENCY")),
+            total_appointments=safe_int(row.get("TOTAL_APPOINTMENTS")),
+            attended_appointments=safe_int(row.get("ATTENDED_APPOINTMENTS")),
+            dna_appointments=safe_int(row.get("DNA_APPOINTMENTS")),
+            first_attendance=safe_int(row.get("FIRST_ATTENDANCE")),
+            follow_up_attendance=safe_int(row.get("FOLLOW_UP_ATTENDANCE")),
+            latest_month_flag=safe_int(row.get("LATEST_MONTH_FLAG"))
+        )
+
+        # Add specialty activity record
+        db.session.add(specialty_activity)
+
+    # Commit specialty records
+    db.session.commit()
+
+    print("Treatment specialty data imported successfully!")

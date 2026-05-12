@@ -154,6 +154,7 @@ def highest_emergency_age_bands():
         db.desc("total_emergency")
     ).limit(10).all()
 
+
 def dashboard_totals():
     #Calculate overall dashboard totals
     return {
