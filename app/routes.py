@@ -5,7 +5,10 @@ from app.services import (
     top_10_busiest_providers,
     average_emergency_by_region,
     highest_outpatient_attendance,
-    highest_dna_appointments
+    highest_dna_appointments,
+    age_band_summary,
+    age_band_dna_rates,
+    highest_emergency_age_bands
 )
 from app.services import provider_summary
 
@@ -153,6 +156,25 @@ def compare():
         provider2_id=provider2_id,
         provider3_id=provider3_id,
         error_message=error_message
+    )
+
+@main.route("/age-analytics")
+def age_analytics():
+    #Load age-band summary data
+    age_summary = age_band_summary()
+
+    #Load DNA rate data by age band
+    dna_rates = age_band_dna_rates()
+
+    #Load highest emergency age bands
+    emergency_age_bands = highest_emergency_age_bands()
+
+    #Render age analytics page
+    return render_template(
+        "age_analytics.html",
+        age_summary=age_summary,
+        dna_rates=dna_rates,
+        emergency_age_bands=emergency_age_bands
     )
 
 
