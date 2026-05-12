@@ -143,12 +143,12 @@
     {% endfor %}
 </table>
 
-
 <div class="info-box">
     Providers with the highest admission totals are typically large NHS trusts
     serving major population centres. These organisations may experience
     greater pressure on emergency and outpatient services.
 </div>
+
 
 <!-- Section heading for emergency admissions by region -->
 <h2>Average Emergency Admissions by Region</h2>
@@ -176,6 +176,7 @@
     {% endfor %}
 </table>
 
+
 <!-- Section heading for outpatient attendance -->
 <h2>Highest Outpatient Attendance</h2>
 
@@ -201,6 +202,7 @@
 
     {% endfor %}
 </table>
+
 
 <!-- Section heading for DNA appointments -->
 <h2>Highest DNA Appointments</h2>
@@ -232,6 +234,69 @@
     High DNA appointment levels may indicate barriers to healthcare access,
     scheduling challenges, or differences in patient engagement.
 </div>
+
+
+<!-- Section heading for specialty activity summary -->
+<h2>Treatment Specialty Activity</h2>
+
+<!-- Table showing activity by treatment specialty -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Specialty</th>
+        <th>Emergency Activity</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+    </tr>
+
+    <!-- Loop through specialty activity results -->
+    {% for specialty in specialties %}
+
+    <!-- Table row for each specialty -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ specialty.specialty_name }}</td>
+        <td>{{ specialty.total_emergency }}</td>
+        <td>{{ specialty.total_appointments }}</td>
+        <td>{{ specialty.dna_appointments }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Section heading for specialty DNA rates -->
+<h2>Treatment Specialty DNA Rates</h2>
+
+<!-- Table showing DNA rates by specialty -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Specialty</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through specialty DNA rate results -->
+    {% for specialty in specialty_rates %}
+
+    <!-- Table row for each specialty -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ specialty.specialty_name }}</td>
+        <td>{{ specialty.total_appointments }}</td>
+        <td>{{ specialty.dna_appointments }}</td>
+        <td>{{ specialty.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
 
 <!-- End of content block -->
 {% endblock %}
