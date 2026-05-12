@@ -143,6 +143,24 @@ def age_band_dna_rates():
     ]
 
 
+def age_best_and_worst_dna_rates():
+    # Get age DNA rate results
+    rates = age_band_dna_rates()
+
+    # Sort age groups by DNA rate
+    sorted_rates = sorted(
+        rates,
+        key=lambda item: item["dna_rate"],
+        reverse=True
+    )
+
+    # Return worst and best age bands
+    return {
+        "worst": sorted_rates[:5],
+        "best": sorted_rates[-5:][::-1]
+    }
+
+
 def highest_emergency_age_bands():
     # Return age bands with highest emergency activity
     return db.session.query(
