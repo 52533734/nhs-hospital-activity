@@ -1,5 +1,5 @@
 from app import db
-from app.models import Provider, Region, MonthlyActivity
+from app.models import Provider, Region, MonthlyActivity, AgeBandActivity
 
 
 def top_10_busiest_providers():
@@ -108,3 +108,48 @@ def provider_summary(provider):
             for a in activities
         )
     }
+
+def age_band_summary():
+    # Summarise NHS activity grouped by age band
+    return db.session.query(
+        AgeBandActivity.age_band.label("age_band"),
+        db.func.sum(AgeBandActivity.emergency).label("total_emergency"),
+        db.func.sum(AgeBandActivity.total_appointments).label("total_appointments"),
+        db.func.sum(AgeBandActivity.attended_appointments).label("attended_appointments"),
+        db.func.sum(AgeBandActivity.dna_appointments).label("dna_appointments")
+    ).group_by(
+        AgeBandActivity.age_band
+    ).order_by(
+        db.desc("total_emergency")
+    ).all()
+
+
+def age_band_dna_rates():
+    # Calculate DNA rate by age band
+    results = age_band_summary()
+
+    # Build formatted list of age-band DNA rates
+    return [
+        {
+            "age_band": row.age_band,
+            "total_appointments": row.total_appointments or 0,
+            "dna_appointments": row.dna_appointments or 0,
+            "dna_rate": round(
+                ((row.dna_appointments or 0) / row.total_appointments) * 100,
+                2
+            ) if row.total_appointments else 0
+        }
+        for row in results
+    ]
+
+
+def highest_emergency_age_bands():
+    # Return age bands with highest emergency activity
+    return db.session.query(
+        AgeBandActivity.age_band.label("age_band"),
+        db.func.sum(AgeBandActivity.emergency).label("total_emergency")
+    ).group_by(
+        AgeBandActivity.age_band
+    ).order_by(
+        db.desc("total_emergency")
+    ).limit(10).all()
