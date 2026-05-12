@@ -1,5 +1,5 @@
 from app import db
-from app.models import Provider, Region, MonthlyActivity, AgeBandActivity
+from app.models import Provider, Region, MonthlyActivity, AgeBandActivity, TreatmentSpecialty, TreatmentSpecialtyActivity
 
 
 def top_10_busiest_providers():
@@ -166,4 +166,79 @@ def dashboard_totals():
         "total_dna": db.session.query(
             db.func.sum(MonthlyActivity.all_first_dna + MonthlyActivity.all_subsequent_dna)
         ).scalar() or 0
+    }
+
+
+def provider_performance_rankings():
+    # Rank providers by lower DNA rate and higher activity
+    results = db.session.query(
+        Provider.org_name.label("org_name"),
+        Region.region_name.label("region_name"),
+        db.func.sum(
+            MonthlyActivity.all_elective_total + MonthlyActivity.all_non_elective
+        ).label("total_admissions"),
+        db.func.sum(
+            MonthlyActivity.all_first_total + MonthlyActivity.all_subsequent_seen
+        ).label("total_outpatients"),
+        db.func.sum(
+            MonthlyActivity.all_first_dna + MonthlyActivity.all_subsequent_dna
+        ).label("total_dna")
+    ).join(
+        Region
+    ).join(
+        MonthlyActivity
+    ).group_by(
+        Provider.id,
+        Provider.org_name,
+        Region.region_name
+    ).all()
+
+    # Build ranked provider performance list
+    ranked = []
+
+    # Loop through provider results
+    for row in results:
+
+        # Calculate total appointments
+        total_appointments = row.total_outpatients or 0
+
+        # Calculate DNA rate
+        dna_rate = round(
+            ((row.total_dna or 0) / total_appointments) * 100,
+            2
+        ) if total_appointments else 0
+
+        # Calculate simple performance score
+        performance_score = round(
+            (100 - dna_rate) + ((row.total_admissions or 0) / 10000),
+            2
+        )
+
+        # Store provider ranking data
+        ranked.append({
+            "org_name": row.org_name,
+            "region_name": row.region_name,
+            "total_admissions": row.total_admissions or 0,
+            "total_outpatients": row.total_outpatients or 0,
+            "total_dna": row.total_dna or 0,
+            "dna_rate": dna_rate,
+            "performance_score": performance_score
+        })
+
+    # Sort best providers first
+    return sorted(
+        ranked,
+        key=lambda item: item["performance_score"],
+        reverse=True
+    )
+
+
+def best_and_worst_providers():
+    # Get ranked provider performance list
+    rankings = provider_performance_rankings()
+
+    # Return best and worst providers
+    return {
+        "best": rankings[:10],
+        "worst": rankings[-10:][::-1]
     }
