@@ -307,6 +307,7 @@ def specialty_dna_rates():
     return [
         {
             "specialty_name": row.specialty_name,
+            "total_emergency": row.total_emergency or 0,
             "total_appointments": row.total_appointments or 0,
             "dna_appointments": row.dna_appointments or 0,
             "dna_rate": round(
