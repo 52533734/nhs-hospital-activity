@@ -6,43 +6,6 @@
 <!-- Provider name heading -->
 <h1>{{ provider.org_name }}</h1>
 
-<!-- Dashboard summary cards -->
-<div class="card-grid">
-
-    <!-- Total admissions -->
-    <div class="card">
-        <h3>Total Admissions</h3>
-        <p>{{ totals.total_admissions }}</p>
-    </div>
-
-    <!-- Total outpatient appointments -->
-    <div class="card">
-        <h3>Total Outpatients</h3>
-        <p>{{ totals.total_outpatients }}</p>
-    </div>
-
-    <!-- Total DNA appointments -->
-    <div class="card">
-        <h3>Total DNA</h3>
-        <p>{{ totals.total_dna }}</p>
-    </div>
-
-    <!-- Overall DNA rate -->
-    <div class="card">
-        <h3>DNA Rate</h3>
-        <p>{{ totals.dna_rate }}%</p>
-    </div>
-
-</div>
-
-<!-- Information box explaining provider summary metrics -->
-<div class="info-box">
-    This provider summary highlights total admissions,
-    outpatient activity, and missed appointment trends
-    across the reporting period.
-</div>
-
-<!-- Provider region information box -->
 <div class="info-box">
 
     <!-- Region label -->
@@ -51,7 +14,7 @@
     <!-- Check if provider has a region -->
     {% if provider.region %}
 
-        <!-- Display provider region name -->
+        <!-- Display provider region -->
         {{ provider.region.region_name.title() }}
 
     {% else %}
@@ -60,10 +23,83 @@
         Unknown
 
     {% endif %}
+
 </div>
 
-<!-- Monthly activity section heading -->
-<h2>Monthly Activity</h2>
+<!-- Provider totals section heading -->
+<h2>Provider Summary</h2>
+
+<!-- Provider summary cards -->
+<div class="card-grid summary-grid">
+
+    <!-- Total admissions card -->
+    <div class="card">
+        <h3>Total Admissions</h3>
+        <p>{{ totals.total_admissions }}</p>
+    </div>
+
+    <!-- Total outpatient appointments card -->
+    <div class="card">
+        <h3>Total Outpatients</h3>
+        <p>{{ totals.total_outpatients }}</p>
+    </div>
+
+    <!-- Missed appointments card -->
+    <div class="card">
+        <h3>Missed Appointments</h3>
+        <p>{{ totals.total_dna }}</p>
+    </div>
+
+    <!-- Missed appointment rate card -->
+    <div class="card">
+        <h3>Missed Appointment Rate</h3>
+        <p>{{ totals.dna_rate }}%</p>
+    </div>
+
+</div>
+
+<!-- Benchmark section heading -->
+<h2>Benchmark Comparison</h2>
+
+<!-- Provider comparison cards -->
+<div class="card-grid summary-grid">
+
+    <!-- Regional rank card -->
+    <div class="card">
+        <h3>Regional Performance Rank</h3>
+        <p>
+            {% if region_rank %}
+                {{ region_rank }}
+            {% else %}
+                N/A
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- National average admissions card -->
+    <div class="card">
+        <h3>National Average Admissions</h3>
+        <p>{{ national_averages.average_admissions }}</p>
+    </div>
+
+    <!-- National average missed appoinment rate card -->
+    <div class="card">
+        <h3>National Average Missed Appointment Rate</h3>
+        <p>{{ national_averages.average_dna_rate }}%</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- Provider activity breakdown heading -->
+<h2>Provider Activity Breakdown</h2>
+
+<!-- Activity breakdown explanation -->
+<p class="info-box">
+    This table shows elective admissions, emergency admissions,
+    outpatient activity, missed appointments, and monthly missed appointment rate.
+</p>
 
 <!-- Check if there are no activity records -->
 {% if activities|length == 0 %}
@@ -75,15 +111,18 @@
 
 {% else %}
 
-<!-- Table displaying monthly activity data -->
+<!-- Table displaying monthly provider activity -->
 <table>
 
     <!-- Table header row -->
     <tr>
         <th>Month</th>
+        <th>Elective Admissions</th>
+        <th>Emergency Admissions</th>
         <th>Total Admissions</th>
-        <th>Outpatient Attendance</th>
-        <th>DNA Appointments</th>
+        <th>Outpatients</th>
+        <th>Missed Appointments</th>
+        <th>Missed Rate</th>
     </tr>
 
     <!-- Loop through provider activity records -->
@@ -91,13 +130,38 @@
 
     <!-- Table row for each activity record -->
     <tr>
+
+        <!-- Display activity month -->
         <td>{{ activity.activity_month }}</td>
+
+        <!-- Display elective admissions -->
+        <td>{{ activity.all_elective_total }}</td>
+
+        <!-- Display emergency admissions -->
+        <td>{{ activity.all_non_elective }}</td>
+
+        <!-- Display total admissions -->
         <td>{{ activity.total_admissions }}</td>
+
+        <!-- Display outpatient attendance -->
         <td>{{ activity.total_outpatient_attendance }}</td>
+
+        <!-- Display missed appointments -->
         <td>{{ activity.dna_total }}</td>
+
+        <!-- Display monthly missed appointment rate -->
+        <td>
+            {% if activity.total_outpatient_attendance %}
+                {{ "%.2f"|format((activity.dna_total / activity.total_outpatient_attendance) * 100) }}%
+            {% else %}
+                0%
+            {% endif %}
+        </td>
+
     </tr>
 
     {% endfor %}
+
 </table>
 
 {% endif %}

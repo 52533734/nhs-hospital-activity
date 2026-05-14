@@ -141,6 +141,7 @@
 
 {% else %}
 
+
 <!-- Table displaying provider information -->
 <table>
 
@@ -148,7 +149,7 @@
     <tr>
 
         <!-- Provider rank column -->
-        <th>Rank</th>
+        <th>#</th>
 
         <!-- Provider name column -->
         <th>Provider Name</th>
@@ -166,7 +167,7 @@
     <!-- Table row for each provider -->
     <tr>
 
-        <!-- Provider rank cell -->
+        <!-- Provider index cell -->
         <td>
             {{ loop.index + ((providers.page - 1) * providers.per_page) }}
         </td>
@@ -197,7 +198,7 @@
 
             <!-- Link to provider details page -->
             <a class="details-button" href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
-                View Details
+                View Provider
             </a>
         </td>
     </tr>
