@@ -10,21 +10,21 @@
 <p class="info-box">
     Explore NHS hospital activity by patient age group,
     including emergency admissions, outpatient attendance,
-    appointment attendance behaviour, and DNA appointment rates.
+    appointment attendance behaviour, and missed appointments rates.
 </p>
 
 <!-- Dashboard summary cards -->
 <div class="card-grid">
 
-    <!-- Highest DNA rate card -->
+    <!-- Highest missed appointment rate card -->
     <div class="card">
-        <h3>Highest DNA Rate</h3>
+        <h3>Highest Missed Appointments Rate</h3>
         <p>{{ age_cases.worst[0].dna_rate }}%</p>
     </div>
 
-    <!-- Lowest DNA rate card -->
+    <!-- Lowest missed appointment rate card -->
     <div class="card">
-        <h3>Lowest DNA Rate</h3>
+        <h3>Lowest Missed Appointment Rate</h3>
         <p>{{ age_cases.best[0].dna_rate }}%</p>
     </div>
 
@@ -52,7 +52,7 @@
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Age Band</th>
         <th>Total Emergency Activity</th>
     </tr>
@@ -91,7 +91,7 @@
         <th>Emergency</th>
         <th>Total Appointments</th>
         <th>Attended Appointments</th>
-        <th>DNA Appointments</th>
+        <th>Missed Appointments</th>
     </tr>
 
     <!-- Loop through age summary data -->
@@ -112,30 +112,30 @@
 
 <hr>
 
-<!-- Highest DNA section heading -->
-<h2>Highest DNA Rate Age Groups</h2>
+<!-- Highest missed appointments section heading -->
+<h2>Highest Missed Appointments Rate Age Groups</h2>
 
-<!-- Highest DNA explanation -->
+<!-- Highest missed appointments explanation -->
 <p class="info-box">
     These age groups have the highest percentage of missed appointments.
 </p>
 
-<!-- Highest DNA table -->
+<!-- Highest missed appointments table -->
 <table>
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Age Band</th>
         <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointment Rate</th>
     </tr>
 
-    <!-- Loop through highest DNA cases -->
+    <!-- Loop through highest missed appointments cases -->
     {% for age in age_cases.worst %}
 
-    <!-- Highest DNA row -->
+    <!-- Highest missed appointments row -->
     <tr>
         <td>{{ loop.index }}</td>
         <td>{{ age.age_band }}</td>
@@ -150,30 +150,30 @@
 
 <hr>
 
-<!-- Lowest DNA section heading -->
-<h2>Lowest DNA Rate Age Groups</h2>
+<!-- Lowest missed appointments section heading -->
+<h2>Strongest Appointments Attendance Rate Age Groups</h2>
 
-<!-- Lowest DNA explanation -->
+<!-- Lowest missed appointments explanation -->
 <p class="info-box">
     These age groups show the strongest appointment attendance behaviour.
 </p>
 
-<!-- Lowest DNA table -->
+<!-- Lowest missed appointments table -->
 <table>
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Age Band</th>
         <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointments Rate</th>
     </tr>
 
-    <!-- Loop through lowest DNA cases -->
+    <!-- Loop through lowest missed appointments cases -->
     {% for age in age_cases.best %}
 
-    <!-- Lowest DNA row -->
+    <!-- Lowest missed appointments row -->
     <tr>
         <td>{{ loop.index }}</td>
         <td>{{ age.age_band }}</td>

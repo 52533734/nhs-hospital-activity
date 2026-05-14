@@ -9,7 +9,7 @@
 <!-- Information box describing the dashboard -->
 <p class="info-box">
     Analyse NHS provider performance using admissions,
-    emergency activity, outpatient attendance, DNA appointments,
+    emergency activity, outpatient attendance, missed appointments,
     and regional healthcare trends.
 </p>
 
@@ -34,12 +34,24 @@
         <p>{{ totals.total_admissions }}</p>
     </div>
 
-    <!-- DNA total card -->
+    <!-- Missed Appointments total card -->
     <div class="card">
-        <h3>Total DNA Appointments</h3>
+        <h3>Total Missed Appointments</h3>
         <p>{{ totals.total_dna }}</p>
     </div>
 
+    <!-- Admissions vs Missed Appointments Correlation card -->
+    <div class="card">
+        <h3>Admissions vs Missed Appointments Correlation</h3>
+        <p>{{ correlation }}</p>
+    </div>
+
+</div>
+
+<div class="info-box">
+    The admissions and missed appointment correlation measures whether providers
+    with higher admissions also tend to experience higher missed appointment totals.
+    Values closer to 1 indicate a stronger positive relationship.
 </div>
 
 <hr>
@@ -55,7 +67,7 @@
         <th>Rank</th>
         <th>Provider</th>
         <th>Region</th>
-        <th>DNA Rate</th>
+        <th>Missed Appointment Rate</th>
         <th>Performance Score</th>
     </tr>
 
@@ -77,30 +89,29 @@
 
 <!-- Information box explaining ranking logic -->
 <div class="info-box">
-    Best-performing providers are ranked using a simple score based on lower DNA rates
-    and higher admission activity. This gives a basic indication of strong appointment
-    attendance and service activity.
+    Best-performing providers are ranked using a simple score based on lower missed appointment rates
+    and higher admission activity. This provides a simple operational performance indicator combining appointment attendance and provider activity levels.
 </div>
 
 <hr>
 
-<!-- Section heading for DNA performance analysis -->
-<h2>DNA Appointment Performance Analysis</h2>
+<!-- Section heading for missed appointments performance analysis -->
+<h2>Missed Appointment Performance Analysis</h2>
 
-<!-- Combined DNA analytics table -->
+<!-- Combined missed appointments analytics table -->
 <table>
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Provider</th>
         <th>Region</th>
-        <th>Total DNA Appointments</th>
+        <th>Total Missed Appointments</th>
         <th>Total Outpatients</th>
-        <th>DNA Rate</th>
+        <th>Missed Appointment Rate</th>
     </tr>
 
-    <!-- Loop through providers with highest DNA rates -->
+    <!-- Loop through providers with highest missed appointment rates -->
     {% for provider in provider_cases.worst %}
 
     <!-- Table row for each provider -->
@@ -117,11 +128,12 @@
 
 </table>
 
-<!-- Information box explaining DNA metrics -->
+<!-- Information box explaining missed appoinment metrics -->
 <div class="info-box">
-    DNA analysis is shown using both total missed appointments and DNA rate.
-    Total DNA appointments highlight operational impact, while DNA rate shows
-    the percentage of appointments missed relative to outpatient activity.
+    Missed appointment analysis is shown using both total missed appointments
+    and missed appointment rate. Total missed appointments highlight operational
+    impact, while the rate shows the percentage of appointments missed relative
+    to outpatient activity.
 </div>
 
 <hr>
@@ -170,7 +182,7 @@
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Provider</th>
         <th>Region</th>
         <th>Total Admissions</th>
@@ -199,14 +211,14 @@
 <hr>
 
 <!-- Section heading for outpatient attendance -->
-<h2>Highest Outpatient Attendance</h2>
+<h2>Providers with Highest Outpatient Attendance</h2>
 
 <!-- Table showing outpatient attendance -->
 <table>
 
     <!-- Table header row -->
     <tr>
-        <th>Rank</th>
+        <th>#</th>
         <th>Provider</th>
         <th>Region</th>
         <th>Total Outpatients</th>
@@ -235,7 +247,7 @@
 <hr>
 
 <!-- Section heading for specialty activity summary -->
-<h2>Treatment Specialty Workload and DNA Rates</h2>
+<h2>Treatment Specialty Workload and Missed Appointment Rates</h2>
 
 <!-- Table showing activity by treatment specialty -->
 <table>
@@ -246,8 +258,8 @@
         <th>Specialty</th>
         <th>Emergency Activity</th>
         <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointment Rate</th>
     </tr>
 
     <!-- Loop through specialty activity results -->
