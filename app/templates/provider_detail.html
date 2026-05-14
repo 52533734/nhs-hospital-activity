@@ -6,6 +6,35 @@
 <!-- Provider name heading -->
 <h1>{{ provider.org_name }}</h1>
 
+<!-- Dashboard summary cards -->
+<div class="card-grid">
+
+    <!-- Total admissions -->
+    <div class="card">
+        <h3>Total Admissions</h3>
+        <p>{{ totals.total_admissions }}</p>
+    </div>
+
+    <!-- Total outpatient appointments -->
+    <div class="card">
+        <h3>Total Outpatients</h3>
+        <p>{{ totals.total_outpatients }}</p>
+    </div>
+
+    <!-- Total DNA appointments -->
+    <div class="card">
+        <h3>Total DNA</h3>
+        <p>{{ totals.total_dna }}</p>
+    </div>
+
+    <!-- Overall DNA rate -->
+    <div class="card">
+        <h3>DNA Rate</h3>
+        <p>{{ totals.dna_rate }}%</p>
+    </div>
+
+</div>
+
 <!-- Provider region information box -->
 <div class="info-box">
 

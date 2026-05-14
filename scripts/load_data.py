@@ -83,7 +83,7 @@ with app.app_context():
     print(f"Provider rows: {len(df)}")
 
     # Limit rows for assignment requirement
-    df = df.head(5000)
+    df = df.head(2000)
 
     # Display final row count
     print(f"Rows selected: {len(df)}")
@@ -350,6 +350,9 @@ with app.app_context():
     
     # Limit rows for assignment requirement
     age_df = age_df.head(2000)
+
+    # Print specialty column names for checking
+    print(age_df.columns.tolist())
     
     # Loop through age-band rows
     for _, row in age_df.iterrows():
@@ -396,18 +399,31 @@ with app.app_context():
         .str.replace(" ", "_")
     )
 
-    # Limit specialty rows for assignment size
+
+    # Print specialty column names for checking
+    print(specialty_df.columns.tolist())
+
+    # Keep only latest monthly records
+    specialty_df = specialty_df[
+        (specialty_df["LATEST_MONTH_FLAG"] == 1) &
+        (specialty_df["TOTAL_APPOINTMENTS"] > 1000)
+    ]
+
+    # Limit rows for assignment requirement
     specialty_df = specialty_df.head(2000)
+
+    # Display final specialty row count
+    print(f"Speciality rows selected: {len(specialty_df)}")
 
     # Loop through specialty rows
     for _, row in specialty_df.iterrows():
 
         # Get specialty code
-        specialty_code = str(row.get("TREATMENT_FUNCTION_CODE", "UNKNOWN")).strip()
+        specialty_code = str(row.get("TRETSPEF", "UNKNOWN")).strip()
 
         # Get specialty name
-        specialty_name = str(row.get("TREATMENT_FUNCTION_NAME", "Unknown")).strip()
-
+        specialty_name = str(row.get("TRETSPEF_DESCRIPTION", "Unknown")).strip()
+        
         # Find existing specialty
         specialty = TreatmentSpecialty.query.filter_by(
             specialty_code=specialty_code
@@ -427,7 +443,7 @@ with app.app_context():
         # Create treatment specialty activity record
         specialty_activity = TreatmentSpecialtyActivity(
             specialty=specialty,
-            part_year=safe_int(row.get("PART_YEAR")),
+            part_year=safe_int(row.get("PARTYEAR")),
             month_ending=str(row.get("MONTH_ENDING", "")),
             fy_start_date=str(row.get("FY_START_DATE", "")),
             fy_end_date=str(row.get("FY_END_DATE", "")),
