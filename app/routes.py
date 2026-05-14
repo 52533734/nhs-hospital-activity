@@ -14,7 +14,8 @@ from app.services import (
     provider_performance_rankings,
     best_and_worst_providers,
     specialty_summary,
-    specialty_dna_rates
+    specialty_dna_rates,
+    provider_detail_totals
 )
 from app.services import provider_summary
 
@@ -94,11 +95,15 @@ def provider_detail(provider_id):
     # Get provider activity records
     activities = provider.monthly_activities
 
+    # Calculate provider totals
+    totals = provider_detail_totals(provider)
+
     # Send data to template
     return render_template(
         "provider_detail.html",
         provider=provider,
-        activities=activities
+        activities=activities,
+        totals=totals
     )
 
 

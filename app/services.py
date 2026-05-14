@@ -263,20 +263,39 @@ def best_and_worst_providers():
 
 
 def specialty_summary():
-    # Summarise activity by treatment speciality
+    # Summarise activity by treatment specialty
     return db.session.query(
-        TreatmentSpecialty.specialty_name.label("speciality_name"),
-        db.func.sum(TreatmentSpecialtyActivity.emergency).label("total_emergency"),
-        db.func.sum(TreatmentSpecialtyActivity.total_appointments).label("total_appoinments"),
-        db.func.sum(TreatmentSpecialtyActivity.attended_appointments).label("attended_appointments"),
-        db.func.sum(TreatmentSpecialtyActivity.dna_appointments).label("dna_appointments")
+
+        # Get treatment specialty name
+        TreatmentSpecialty.specialty_name.label("specialty_name"),
+
+        # Calculate total emergency activity
+        db.func.sum(
+            TreatmentSpecialtyActivity.emergency
+        ).label("total_emergency"),
+
+        # Calculate total appointments
+        db.func.sum(
+            TreatmentSpecialtyActivity.total_appointments
+        ).label("total_appointments"),
+
+        # Calculate attended appointments
+        db.func.sum(
+            TreatmentSpecialtyActivity.attended_appointments
+        ).label("attended_appointments"),
+
+        # Calculate DNA appointments
+        db.func.sum(
+            TreatmentSpecialtyActivity.dna_appointments
+        ).label("dna_appointments")
+
     ).join(
         TreatmentSpecialtyActivity
     ).group_by(
         TreatmentSpecialty.id,
         TreatmentSpecialty.specialty_name
     ).order_by(
-         db.desc("total_appointments")
+        db.desc("total_appointments")
     ).limit(10).all()
 
 
@@ -297,3 +316,34 @@ def specialty_dna_rates():
         }
         for row in rows
     ]
+
+
+def provider_detail_totals(provider):
+    # Calculate provider-level totals
+    total_admissions = sum(
+        (a.all_elective_total or 0) + (a.all_non_elective or 0)
+        for a in provider.monthly_activities
+    )
+
+    # Calculate outpatient total
+    total_outpatients = sum(
+        (a.all_first_total or 0) + (a.all_subsequent_seen or 0)
+        for a in provider.monthly_activities
+    )
+
+    # Calculate DNA total
+    total_dna = sum(
+        (a.all_first_dna or 0) + (a.all_subsequent_dna or 0)
+        for a in provider.monthly_activities
+    )
+
+    # Calculate DNA percentage
+    dna_rate = round((total_dna / total_outpatients) * 100, 2) if total_outpatients else 0
+
+    # Return provider totals
+    return {
+        "total_admissions": total_admissions,
+        "total_outpatients": total_outpatients,
+        "total_dna": total_dna,
+        "dna_rate": dna_rate
+    }
