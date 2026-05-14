@@ -205,10 +205,10 @@ tr:hover {
 
 /* Large dashboard metric values */
 .card p {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: #003087;
-    margin-top: 12px;
+    margin: 10px 0 0;
 }
 
 /* Pagination container */
