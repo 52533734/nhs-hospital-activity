@@ -82,8 +82,14 @@ with app.app_context():
     # Display provider row count
     print(f"Provider rows: {len(df)}")
 
-    # Limit rows for assignment requirement
-    df = df.head(2000)
+    # Select provider codes while preserving all 12 monthly records
+    selected_provider_codes = df["ORG_CODE"].dropna().unique()[:400]
+
+    # Keep all monthly rows for the selected providers
+    df = df[df["ORG_CODE"].isin(selected_provider_codes)]
+
+    # Keep provider activity records close to 5000 rows
+    df = df.head(5000)
 
     # Display final row count
     print(f"Rows selected: {len(df)}")
@@ -349,7 +355,7 @@ with app.app_context():
     print(f"Age-band rows: {len(age_df)}")
     
     # Limit rows for assignment requirement
-    age_df = age_df.head(2000)
+    age_df = age_df.head(1000)
 
     # Print specialty column names for checking
     print(age_df.columns.tolist())
@@ -410,7 +416,7 @@ with app.app_context():
     ]
 
     # Limit rows for assignment requirement
-    specialty_df = specialty_df.head(2000)
+    specialty_df = specialty_df.head(1000)
 
     # Display final specialty row count
     print(f"Speciality rows selected: {len(specialty_df)}")
