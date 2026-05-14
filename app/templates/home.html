@@ -13,7 +13,6 @@
     emergency admissions, and age-based healthcare trends.
 </p>
 
-<!-- Horizontal divider -->
 <hr>
 
 <!-- Features section heading -->
@@ -42,7 +41,7 @@
         <h3>View Analytics</h3>
 
         <!-- Card description -->
-        <p>Explore provider rankings, emergency admissions, outpatient activity, and DNA appointments.</p>
+        <p>Explore provider rankings, regional trends, specialty activity, and DNA performance.</p>
 
         <!-- Link button to analytics page -->
         <a class="button" href="{{ url_for('main.analytics') }}">View Analytics</a>
@@ -61,9 +60,21 @@
         <a class="button" href="{{ url_for('main.compare') }}">Compare Providers</a>
     </div>
 
+    <!-- Age analytics feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>Age Analytics</h3>
+
+        <!-- Card description -->
+        <p>Analyse emergency activity, DNA rates, and appointment behaviour by patient age group.</p>
+
+        <!-- Link button to age analytics page -->
+        <a class="button" href="{{ url_for('main.age_analytics') }}">View Age Analytics</a>
+    </div>
+
 </div>
 
-<!-- Horizontal divider -->
 <hr>
 
 <!-- Dataset section heading -->

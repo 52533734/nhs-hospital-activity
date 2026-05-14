@@ -42,6 +42,8 @@
 
 </div>
 
+<hr>
+
 <!-- Section heading for best-performing providers -->
 <h2>Best Performing Providers</h2>
 
@@ -80,10 +82,12 @@
     attendance and service activity.
 </div>
 
-<!-- Section heading for worst-performing providers -->
-<h2>Worst Performing Providers by DNA Rate</h2>
+<hr>
 
-<!-- Table showing worst provider rankings -->
+<!-- Section heading for DNA performance analysis -->
+<h2>DNA Appointment Performance Analysis</h2>
+
+<!-- Combined DNA analytics table -->
 <table>
 
     <!-- Table header row -->
@@ -91,11 +95,12 @@
         <th>Rank</th>
         <th>Provider</th>
         <th>Region</th>
+        <th>Total DNA Appointments</th>
+        <th>Total Outpatients</th>
         <th>DNA Rate</th>
-        <th>Total DNA</th>
     </tr>
 
-    <!-- Loop through worst-performing providers -->
+    <!-- Loop through providers with highest DNA rates -->
     {% for provider in provider_cases.worst %}
 
     <!-- Table row for each provider -->
@@ -103,52 +108,23 @@
         <td>{{ loop.index }}</td>
         <td>{{ provider.org_name }}</td>
         <td>{{ provider.region_name.title() }}</td>
-        <td>{{ provider.dna_rate }}%</td>
         <td>{{ provider.total_dna }}</td>
+        <td>{{ provider.total_outpatients }}</td>
+        <td>{{ provider.dna_rate }}%</td>
     </tr>
 
     {% endfor %}
 
 </table>
 
-<!-- Information box explaining worst-case providers -->
+<!-- Information box explaining DNA metrics -->
 <div class="info-box">
-    Worst-case providers show higher missed appointment rates. These results may indicate
-    possible access barriers, scheduling issues, or differences in patient attendance behaviour.
+    DNA analysis is shown using both total missed appointments and DNA rate.
+    Total DNA appointments highlight operational impact, while DNA rate shows
+    the percentage of appointments missed relative to outpatient activity.
 </div>
 
-<!-- Section heading for busiest providers -->
-<h2>Top 10 Busiest Providers by Admissions</h2>
-
-<!-- Table showing providers with highest admissions -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Provider</th>
-        <th>Region</th>
-        <th>Total Admissions</th>
-    </tr>
-
-    <!-- Loop through busiest providers data -->
-    {% for provider in busiest_providers %}
-
-    <!-- Table row for each provider -->
-    <tr>
-        <td>{{ provider.org_name }}</td>
-        <td>{{ provider.region_name.title() }}</td>
-        <td>{{ provider.total_admissions }}</td>
-    </tr>
-
-    {% endfor %}
-</table>
-
-<div class="info-box">
-    Providers with the highest admission totals are typically large NHS trusts
-    serving major population centres. These organisations may experience
-    greater pressure on emergency and outpatient services.
-</div>
-
+<hr>
 
 <!-- Section heading for emergency admissions by region -->
 <h2>Average Emergency Admissions by Region</h2>
@@ -174,8 +150,53 @@
     </tr>
 
     {% endfor %}
+
 </table>
 
+<!-- Information box explaining emergency admission trends by region -->
+<div class="info-box">
+    Regions with higher emergency admission averages may reflect
+    larger populations, greater healthcare demand, or increased
+    pressure on urgent care services.
+</div>
+
+<hr>
+
+<!-- Section heading for busiest providers -->
+<h2>Top 10 Busiest Providers by Admissions</h2>
+
+<!-- Table showing providers with highest admissions -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total Admissions</th>
+    </tr>
+
+    <!-- Loop through busiest providers data -->
+    {% for provider in busiest_providers %}
+
+    <!-- Table row for each provider -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ provider.org_name }}</td>
+        <td>{{ provider.region_name.title() }}</td>
+        <td>{{ provider.total_admissions }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+<div class="info-box">
+    Providers with the highest admission totals are typically large NHS trusts
+    serving major population centres. These organisations may experience
+    greater pressure on emergency and outpatient services.
+</div>
+
+<hr>
 
 <!-- Section heading for outpatient attendance -->
 <h2>Highest Outpatient Attendance</h2>
@@ -185,6 +206,7 @@
 
     <!-- Table header row -->
     <tr>
+        <th>Rank</th>
         <th>Provider</th>
         <th>Region</th>
         <th>Total Outpatients</th>
@@ -195,6 +217,7 @@
 
     <!-- Table row for each provider -->
     <tr>
+        <td>{{ loop.index }}</td>
         <td>{{ provider.org_name }}</td>
         <td>{{ provider.region_name.title() }}</td>
         <td>{{ provider.total_outpatients }}</td>
@@ -203,41 +226,16 @@
     {% endfor %}
 </table>
 
-
-<!-- Section heading for DNA appointments -->
-<h2>Highest DNA Appointments</h2>
-
-<!-- Table showing DNA appointment statistics -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Provider</th>
-        <th>Region</th>
-        <th>Total DNA Appointments</th>
-    </tr>
-
-    <!-- Loop through DNA appointment data -->
-    {% for provider in dna_appointments %}
-
-    <!-- Table row for each provider -->
-    <tr>
-        <td>{{ provider.org_name }}</td>
-        <td>{{ provider.region_name.title() }}</td>
-        <td>{{ provider.total_dna }}</td>
-    </tr>
-
-    {% endfor %}
-</table>
-
+<!-- Information box explaining outpatient attendance activity -->
 <div class="info-box">
-    High DNA appointment levels may indicate barriers to healthcare access,
-    scheduling challenges, or differences in patient engagement.
+    Providers with high outpatient attendance manage large volumes
+    of follow-up and referral-based care activity across NHS services.
 </div>
 
+<hr>
 
 <!-- Section heading for specialty activity summary -->
-<h2>Treatment Specialty Activity</h2>
+<h2>Treatment Specialty Workload and DNA Rates</h2>
 
 <!-- Table showing activity by treatment specialty -->
 <table>
@@ -249,10 +247,11 @@
         <th>Emergency Activity</th>
         <th>Total Appointments</th>
         <th>DNA Appointments</th>
+        <th>DNA Rate</th>
     </tr>
 
     <!-- Loop through specialty activity results -->
-    {% for specialty in specialties %}
+    {% for specialty in specialty_rates %}
 
     <!-- Table row for each specialty -->
     <tr>
@@ -261,42 +260,19 @@
         <td>{{ specialty.total_emergency }}</td>
         <td>{{ specialty.total_appointments }}</td>
         <td>{{ specialty.dna_appointments }}</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
-
-<!-- Section heading for specialty DNA rates -->
-<h2>Treatment Specialty DNA Rates</h2>
-
-<!-- Table showing DNA rates by specialty -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Rank</th>
-        <th>Specialty</th>
-        <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
-    </tr>
-
-    <!-- Loop through specialty DNA rate results -->
-    {% for specialty in specialty_rates %}
-
-    <!-- Table row for each specialty -->
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ specialty.specialty_name }}</td>
-        <td>{{ specialty.total_appointments }}</td>
-        <td>{{ specialty.dna_appointments }}</td>
         <td>{{ specialty.dna_rate }}%</td>
     </tr>
 
     {% endfor %}
 
 </table>
+
+<!-- Information box explaining treatment specialty analytics -->
+<div class="info-box">
+    Treatment specialty analysis helps identify which clinical areas
+    experience the greatest emergency demand, outpatient workload,
+    and appointment attendance challenges.
+</div>
 
 <!-- End of content block -->
 {% endblock %}

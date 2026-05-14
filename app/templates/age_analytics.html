@@ -13,23 +13,56 @@
     appointment attendance behaviour, and DNA appointment rates.
 </p>
 
-<!-- Section heading for emergency activity -->
+<!-- Dashboard summary cards -->
+<div class="card-grid">
+
+    <!-- Highest DNA rate card -->
+    <div class="card">
+        <h3>Highest DNA Rate</h3>
+        <p>{{ age_cases.worst[0].dna_rate }}%</p>
+    </div>
+
+    <!-- Lowest DNA rate card -->
+    <div class="card">
+        <h3>Lowest DNA Rate</h3>
+        <p>{{ age_cases.best[0].dna_rate }}%</p>
+    </div>
+
+    <!-- Highest emergency activity card -->
+    <div class="card">
+        <h3>Highest Emergency Activity</h3>
+        <p>{{ emergency_age_bands[0].total_emergency }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- Emergency activity section heading -->
 <h2>Highest Emergency Activity by Age Band</h2>
 
-<!-- Emergency age-band table -->
+<!-- Emergency activity explanation -->
+<p class="info-box">
+    Emergency activity analysis helps identify which age groups
+    place the highest demand on NHS emergency healthcare services.
+</p>
+
+<!-- Emergency activity table -->
 <table>
 
     <!-- Table header row -->
     <tr>
+        <th>Rank</th>
         <th>Age Band</th>
         <th>Total Emergency Activity</th>
     </tr>
 
-    <!-- Loop through emergency age-band results -->
+    <!-- Loop through emergency activity results -->
     {% for age in emergency_age_bands %}
 
-    <!-- Table row for each age band -->
+    <!-- Emergency activity row -->
     <tr>
+        <td>{{ loop.index }}</td>
         <td>{{ age.age_band }}</td>
         <td>{{ age.total_emergency }}</td>
     </tr>
@@ -38,108 +71,18 @@
 
 </table>
 
-<!-- Section heading for DNA rates -->
-<h2>DNA Appointment Rate by Age Band</h2>
+<hr>
 
-<!-- DNA rate table -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Age Band</th>
-        <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
-    </tr>
-
-    <!-- Loop through DNA rate data -->
-    {% for age in dna_rates %}
-
-    <!-- Table row for each age band -->
-    <tr>
-        <td>{{ age.age_band }}</td>
-        <td>{{ age.total_appointments }}</td>
-        <td>{{ age.dna_appointments }}</td>
-        <td>{{ age.dna_rate }}%</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
-
-<!-- Section heading for highest DNA rate age groups -->
-<h2>Highest DNA Rate Age Groups</h2>
-
-<!-- Table showing age groups with highest DNA rates -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Rank</th>
-        <th>Age Band</th>
-        <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
-    </tr>
-
-    <!-- Loop through highest DNA rate age groups -->
-    {% for age in age_cases.worst %}
-
-    <!-- Table row for each age group -->
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ age.age_band }}</td>
-        <td>{{ age.total_appointments }}</td>
-        <td>{{ age.dna_appointments }}</td>
-        <td>{{ age.dna_rate }}%</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
-
-<!-- Section heading for lowest DNA rate age groups -->
-<h2>Lowest DNA Rate Age Groups</h2>
-
-<!-- Table showing age groups with lowest DNA rates -->
-<table>
-
-    <!-- Table header row -->
-    <tr>
-        <th>Rank</th>
-        <th>Age Band</th>
-        <th>Total Appointments</th>
-        <th>DNA Appointments</th>
-        <th>DNA Rate</th>
-    </tr>
-
-    <!-- Loop through lowest DNA rate age groups -->
-    {% for age in age_cases.best %}
-
-    <!-- Table row for each age group -->
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ age.age_band }}</td>
-        <td>{{ age.total_appointments }}</td>
-        <td>{{ age.dna_appointments }}</td>
-        <td>{{ age.dna_rate }}%</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
-
-<!-- Information box explaining age-based DNA comparisons -->
-<div class="info-box">
-    Comparing highest and lowest DNA rates by age group helps identify which patient groups
-    are more likely to miss appointments and which groups have stronger attendance patterns.
-</div>
-
-
-<!-- Section heading for full summary -->
+<!-- Full age summary section heading -->
 <h2>Age Band Activity Summary</h2>
 
-<!-- Full age-band summary table -->
+<!-- Age summary explanation -->
+<p class="info-box">
+    This summary compares emergency activity, attended appointments,
+    and missed appointments across all patient age groups.
+</p>
+
+<!-- Full summary table -->
 <table>
 
     <!-- Table header row -->
@@ -154,13 +97,89 @@
     <!-- Loop through age summary data -->
     {% for age in age_summary %}
 
-    <!-- Table row for each age band -->
+    <!-- Summary row -->
     <tr>
         <td>{{ age.age_band }}</td>
         <td>{{ age.total_emergency }}</td>
         <td>{{ age.total_appointments }}</td>
         <td>{{ age.attended_appointments }}</td>
         <td>{{ age.dna_appointments }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<!-- Highest DNA section heading -->
+<h2>Highest DNA Rate Age Groups</h2>
+
+<!-- Highest DNA explanation -->
+<p class="info-box">
+    These age groups have the highest percentage of missed appointments.
+</p>
+
+<!-- Highest DNA table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through highest DNA cases -->
+    {% for age in age_cases.worst %}
+
+    <!-- Highest DNA row -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<!-- Lowest DNA section heading -->
+<h2>Lowest DNA Rate Age Groups</h2>
+
+<!-- Lowest DNA explanation -->
+<p class="info-box">
+    These age groups show the strongest appointment attendance behaviour.
+</p>
+
+<!-- Lowest DNA table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Rank</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>DNA Appointments</th>
+        <th>DNA Rate</th>
+    </tr>
+
+    <!-- Loop through lowest DNA cases -->
+    {% for age in age_cases.best %}
+
+    <!-- Lowest DNA row -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
     </tr>
 
     {% endfor %}
