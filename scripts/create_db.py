@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Add project root directory to Python path
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+)
+
 from app import create_app, db
 
 # Import all models
