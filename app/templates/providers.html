@@ -132,7 +132,7 @@
 
 
 <!-- Table displaying provider information -->
-<table>
+<table class="table-wrapper">
 
     <!-- Table header row -->
     <tr>
@@ -151,25 +151,15 @@
             {{ loop.index + ((providers.page - 1) * providers.per_page) }}
         </td>
 
-        <td>
-            {{ loop.index + ((providers.page - 1) * providers.per_page) }}
-        </td>
-
         <td class="provider-name">
             {{ provider.org_name }}
         </td>
 
         <td>
-
-            <!-- Check if provider has a region -->
             {% if provider.region %}
-
                 {{ provider.region.region_name.title() }}
-
             {% else %}
-
                 Unknown
-
             {% endif %}
         </td>
 
