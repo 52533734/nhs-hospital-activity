@@ -106,11 +106,11 @@ cd nhs-hospital-activity
 python -m venv venv
 ```
 3. Activate Virtual Environment
-### Windows
+Windows
 ```bash
 venv\Scripts\activate
 ```
-### Mac/Linux
+Mac/Linux
 ```bash
 source venv/bin/activate
 ```
