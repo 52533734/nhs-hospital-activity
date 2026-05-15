@@ -10,6 +10,7 @@ from app.services import (
     national_provider_averages,
     provider_region_rank,
     best_and_worst_providers,
+    provider_monthly_summary,
     age_band_summary,
     age_band_dna_rates,
     highest_emergency_age_bands,
@@ -90,57 +91,6 @@ def provider_detail(provider_id):
     # Find provider by ID
     provider = Provider.query.get_or_404(provider_id)
 
-    # Create dictionary to group activity records by month
-    monthly_summary = {}
-
-    # Loop through all provider activity records
-    for activity in provider.monthly_activities:
-
-        # Store activity month as the grouping key
-        month = activity.activity_month
-
-        # Create a new month entry if it does not already exist
-        if month not in monthly_summary:
-            monthly_summary[month] = {
-                "activity_month": month,
-                "all_elective_total": 0,
-                "all_non_elective": 0,
-                "total_admissions": 0,
-                "total_outpatient_attendance": 0,
-                "dna_total": 0
-            }
-
-        # Add elective admissions for this month
-        monthly_summary[month]["all_elective_total"] += (
-            activity.all_elective_total or 0
-        )
-
-        # Add emergency admissions for this month
-        monthly_summary[month]["all_non_elective"] += (
-            activity.all_non_elective or 0
-        )
-
-        # Add total admissions for this month
-        monthly_summary[month]["total_admissions"] += (
-            (activity.all_elective_total or 0) +
-            (activity.all_non_elective or 0)
-        )
-
-        # Add outpatient attendance for this month
-        monthly_summary[month]["total_outpatient_attendance"] += (
-            (activity.all_first_total or 0) +
-            (activity.all_subsequent_seen or 0)
-        )
-
-        # Add missed appointments for this month
-        monthly_summary[month]["dna_total"] += (
-            (activity.all_first_dna or 0) +
-            (activity.all_subsequent_dna or 0)
-        )
-
-    # Convert grouped monthly data into a list
-    activities = list(monthly_summary.values())
-
     # Calculate provider totals
     totals = provider_detail_totals(provider)
 
@@ -154,7 +104,7 @@ def provider_detail(provider_id):
     return render_template(
         "provider_detail.html",
         provider=provider,
-        activities=activities,
+        activities=provider_monthly_summary(provider),
         totals=totals,
         national_averages=national_averages,
         region_rank=region_rank
