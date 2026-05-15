@@ -10,22 +10,17 @@
 <!-- Provider comparison form using GET request -->
 <form class="compare-form" method="GET" action="{{ url_for('main.compare') }}">
 
-    <!-- First provider form row -->
+    <!-- First provider Dropdown -->
     <div class="form-row">
 
-        <!-- Provider 1 label -->
         <label>Provider 1:</label>
 
-        <!-- Dropdown for first provider -->
         <select name="provider1" id="provider1">
 
-            <!-- Default dropdown option -->
             <option value="">Select provider</option>
 
-            <!-- Loop through all providers -->
             {% for provider in providers %}
 
-                <!-- Provider option for first dropdown -->
                 <option
                     value="{{ provider.id }}"
                     {% if provider1_id == provider.id %}
@@ -44,22 +39,17 @@
 
     </div>
 
-    <!-- Second provider form row -->
+    <!-- Second provider Dropdown -->
     <div class="form-row">
 
-        <!-- Provider 2 label -->
         <label>Provider 2:</label>
 
-        <!-- Dropdown for second provider -->
         <select name="provider2" id="provider2">
 
-            <!-- Default dropdown option -->
             <option value="">Select provider</option>
 
-            <!-- Loop through all providers -->
             {% for provider in providers %}
 
-                <!-- Provider option for second dropdown -->
                 <option
                     value="{{ provider.id }}"
                     {% if provider2_id == provider.id %}
@@ -78,22 +68,17 @@
 
     </div>
 
-    <!-- Third provider form row -->
+    <!-- Third provider dropdown -->
     <div class="form-row">
 
-        <!-- Provider 3 label -->
         <label>Provider 3:</label>
 
-        <!-- Optional dropdown for third provider -->
         <select name="provider3" id="provider3">
 
-            <!-- Default optional dropdown option -->
             <option value="">Optional provider</option>
 
-            <!-- Loop through all providers -->
             {% for provider in providers %}
 
-                <!-- Provider option for third dropdown -->
                 <option
                     value="{{ provider.id }}"
                     {% if provider3_id == provider.id %}
@@ -112,7 +97,7 @@
 
     </div>
 
-    <!-- Form button row -->
+    <!-- Form button -->
     <div class="form-actions">
 
         <!-- Submit button to compare selected providers -->
@@ -128,7 +113,6 @@
 <!-- Display error message if one exists -->
 {% if error_message %}
 
-    <!-- Error message paragraph -->
     <p class="error-message">
         {{ error_message }}
     </p>
@@ -136,7 +120,6 @@
 <!-- Display empty state if no providers are selected -->
 {% elif selected_providers|length == 0 %}
 
-    <!-- Empty state message -->
     <div class="empty-state">
         Please select two or three providers to compare.
     </div>

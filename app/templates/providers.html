@@ -18,8 +18,6 @@
 
     <!-- Provider name filter field -->
     <div class="filter-field">
-
-        <!-- Provider name label -->
         <label>
             Provider name:
         </label>
@@ -37,7 +35,6 @@
     <!-- Region filter field -->
     <div class="filter-field">
 
-        <!-- Region dropdown label -->
         <label>
             Region:
         </label>
@@ -53,7 +50,6 @@
             <!-- Loop through all regions -->
             {% for region in regions %}
 
-                <!-- Region dropdown option -->
                 <option
                     value="{{ region.id }}"
 
@@ -62,7 +58,6 @@
                     {% endif %}
                 >
 
-                    <!-- Display formatted region name -->
                     {{ region.region_name.title() }}
 
                 </option>
@@ -76,12 +71,10 @@
     <!-- Minimum admissions filter field -->
     <div class="filter-field">
 
-        <!-- Minimum admissions label -->
         <label>
             Minimum admissions:
         </label>
 
-        <!-- Minimum admissions input -->
         <input
             type="number"
             name="min_admissions"
@@ -94,12 +87,10 @@
     <!-- Minimum outpatient attendance filter field -->
     <div class="filter-field">
 
-        <!-- Minimum outpatient attendance label -->
         <label>
             Minimum outpatient attendance:
         </label>
 
-        <!-- Minimum outpatient attendance input -->
         <input
             type="number"
             name="min_outpatients"
@@ -112,12 +103,10 @@
     <!-- Filter action buttons -->
     <div class="provider-filter-actions">
 
-        <!-- Submit filter button -->
         <button type="submit">
             Apply Filters
         </button>
 
-        <!-- Clear filter button -->
         <a class="button" href="{{ url_for('main.providers') }}">
             Clear
         </a>
@@ -147,17 +136,9 @@
 
     <!-- Table header row -->
     <tr>
-
-        <!-- Provider rank column -->
         <th>#</th>
-
-        <!-- Provider name column -->
         <th>Provider Name</th>
-
-        <!-- Region column -->
         <th>Region</th>
-
-        <!-- Details column -->
         <th>Details</th>
     </tr>
 
@@ -166,37 +147,33 @@
 
     <!-- Table row for each provider -->
     <tr>
-
-        <!-- Provider index cell -->
         <td>
             {{ loop.index + ((providers.page - 1) * providers.per_page) }}
         </td>
-        <!-- Provider name cell -->
+
+        <td>
+            {{ loop.index + ((providers.page - 1) * providers.per_page) }}
+        </td>
+
         <td class="provider-name">
             {{ provider.org_name }}
         </td>
 
-        <!-- Provider region cell -->
         <td>
 
             <!-- Check if provider has a region -->
             {% if provider.region %}
 
-                <!-- Display region name -->
                 {{ provider.region.region_name.title() }}
 
             {% else %}
 
-                <!-- Display fallback text -->
                 Unknown
 
             {% endif %}
         </td>
 
-        <!-- Provider details link cell -->
         <td>
-
-            <!-- Link to provider details page -->
             <a class="details-button" href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
                 View Provider
             </a>
@@ -212,7 +189,6 @@
     <!-- Show previous button if previous page exists -->
     {% if providers.has_prev %}
 
-        <!-- Previous page link -->
         <a class="button" href="{{ url_for(
             'main.providers',
             page=providers.prev_num,
@@ -232,7 +208,6 @@
     <!-- Show next button if next page exists -->
     {% if providers.has_next %}
 
-        <!-- Next page link -->
         <a class="button" href="{{ url_for(
             'main.providers',
             page=providers.next_num,
