@@ -7,16 +7,17 @@ body {
     line-height: 1.6;
 }
 
-/* Top navigation bar */
+/* Navigation */
 nav {
     background-color: #005eb8;
     padding: 16px 40px;
     display: flex;
-    gap: 24px;
+    justify-content: center;
     align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
 }
 
-/* Navigation links */
 nav a {
     color: white;
     text-decoration: none;
@@ -25,13 +26,11 @@ nav a {
     border-radius: 4px;
 }
 
-/* Navigation hover effect */
 nav a:hover {
     background-color: #003087;
-    text-decoration: none;
 }
 
-/* Main content container */
+/* Main container */
 main {
     width: 90%;
     max-width: 1200px;
@@ -42,31 +41,28 @@ main {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* Main page heading */
+/* Headings */
 h1 {
     color: #003087;
     margin-bottom: 10px;
 }
 
-/* Section headings */
 h2 {
     color: #005eb8;
     margin-top: 30px;
 }
 
-/* Paragraph formatting */
 p {
     max-width: 900px;
 }
 
-/* Horizontal divider line */
 hr {
     border: none;
     border-top: 1px solid #ddd;
     margin: 28px 0;
 }
 
-/* General form styling */
+/* Forms */
 form {
     margin-bottom: 25px;
     padding: 20px;
@@ -74,20 +70,19 @@ form {
     border-radius: 8px;
 }
 
-/* Form labels */
 label {
     font-weight: bold;
 }
 
-/* Form input fields */
 input,
 select {
     padding: 9px;
     border: 1px solid #bbb;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
-/* Shared button styling */
+/* Buttons */
 button,
 .button,
 .details-button {
@@ -100,24 +95,22 @@ button,
     display: inline-block;
     font-weight: bold;
     cursor: pointer;
+    text-align: center;
 }
 
-/* Button hover effect */
 button:hover,
 .button:hover,
 .details-button:hover {
     background-color: #003087;
     color: white;
-    text-decoration: none;
 }
 
-/* Standard link styling */
 a {
     color: #005eb8;
     font-weight: bold;
 }
 
-/* Table layout styling */
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -125,7 +118,6 @@ table {
     margin-bottom: 30px;
 }
 
-/* Table header cells */
 th {
     background-color: #005eb8;
     color: white;
@@ -133,28 +125,26 @@ th {
     text-align: left;
 }
 
-/* Table body cells */
 td {
     border: 1px solid #ddd;
     padding: 11px;
 }
 
-/* Alternate row colors */
 tr:nth-child(even) {
     background-color: #f2f6fb;
 }
 
-/* Row hover highlight */
 tr:hover {
     background-color: #e8f1f8;
 }
 
-/* Provider name formatting */
-.provider-name {
-    font-weight: bold;
+/* Allows wide tables to scroll on small screens */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
-/* Error message styling */
+/* Messages */
 .error-message {
     background-color: #fdecea;
     color: #8a1f11;
@@ -163,7 +153,6 @@ tr:hover {
     border-radius: 4px;
 }
 
-/* Informational message box */
 .info-box {
     background-color: #eef4fb;
     border-left: 5px solid #005eb8;
@@ -172,7 +161,6 @@ tr:hover {
     margin: 20px 0;
 }
 
-/* Empty-state message styling */
 .empty-state {
     background-color: #fff7e6;
     border-left: 5px solid #ffb81c;
@@ -181,43 +169,40 @@ tr:hover {
     margin-top: 20px;
 }
 
-/* Responsive card grid layout */
-.card-grid {
+/* Cards */
+.card-grid,
+.summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 18px;
     margin: 20px 0;
 }
 
-/* Individual feature card */
 .card {
     background-color: #eef4fb;
     padding: 18px;
     border-radius: 8px;
     border-left: 5px solid #005eb8;
+    word-break: break-word;
 }
 
-/* Card heading */
 .card h3 {
     margin-top: 0;
     color: #003087;
+    font-size: 16px;
 }
 
-/* Large dashboard metric values */
 .card p {
     font-size: 28px;
     font-weight: bold;
     color: #003087;
     margin: 10px 0 0;
-    word-break: break-word;
 }
 
-/* Summary card grid for detail pages */
 .summary-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-/* Make summary cards more dashboard-like */
 .summary-grid .card {
     min-height: 120px;
     display: flex;
@@ -225,55 +210,28 @@ tr:hover {
     justify-content: center;
 }
 
-/* Smaller card titles */
-.summary-grid .card h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-/* Larger metric values */
-.summary-grid .card p {
-    font-size: 28px;
-    font-weight: bold;
-    color: #003087;
-    margin: 0;
-}
-
-/* Pagination container */
-.pagination {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-/* Provider filter form with two fields per row */
+/* Provider filters */
 .provider-filter-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px 30px;
     align-items: end;
 }
 
-/* Each provider filter field */
 .filter-field {
     display: flex;
     flex-direction: column;
 }
 
-/* Provider filter labels */
 .filter-field label {
     margin-bottom: 6px;
 }
 
-/* Provider filter inputs and dropdowns */
 .filter-field input,
 .filter-field select {
     width: 100%;
-    box-sizing: border-box;
 }
 
-/* Provider filter button row */
 .provider-filter-actions {
     grid-column: 1 / -1;
     display: flex;
@@ -281,91 +239,220 @@ tr:hover {
     gap: 15px;
 }
 
-/* Compare page form layout */
+/* Compare form */
 .compare-form {
     display: block;
 }
 
-/* Each compare dropdown row */
 .form-row {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
 
-/* Compare form labels */
 .form-row label {
     width: 120px;
 }
 
-/* Compare form dropdowns */
 .form-row select {
     flex: 1;
 }
 
-/* Compare form button row */
 .form-actions {
     margin-left: 120px;
     display: flex;
     gap: 12px;
 }
 
-/* Responsive layout for smaller screens */
-@media (max-width: 700px) {
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
 
-    /* Stack navigation vertically on mobile */
+.provider-name {
+    font-weight: bold;
+}
+
+/* Tablet screens */
+@media (max-width: 900px) {
     nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
+        padding: 14px 24px;
+        gap: 14px;
     }
 
-    /* Reduce content padding on mobile */
     main {
         width: 92%;
-        padding: 20px;
+        padding: 24px;
     }
 
-    /* Stack provider filter fields */
     .provider-filter-form {
         grid-template-columns: 1fr;
     }
 
-    /* Stack provider filter buttons */
-    .provider-filter-actions {
-        flex-direction: column;
+    .card-grid,
+    .summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
 
-    /* Stack compare form rows */
+    table {
+        font-size: 15px;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+
+    nav a {
+        display: block;
+        text-align: center;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    main {
+        width: 94%;
+        margin: 16px auto;
+        padding: 16px;
+        border-radius: 6px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    .card-grid,
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card p {
+        font-size: 24px;
+    }
+
+    .provider-filter-actions,
+    .form-actions,
+    .pagination {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .form-row {
         flex-direction: column;
         align-items: stretch;
     }
 
-    /* Full-width compare labels */
     .form-row label {
         width: 100%;
         margin-bottom: 6px;
     }
 
-    /* Remove compare button indentation */
     .form-actions {
         margin-left: 0;
-        flex-direction: column;
     }
 
-    /* Full-width form controls on mobile */
     input,
     select,
     button,
-    .button {
+    .button,
+    .details-button {
         width: 100%;
         box-sizing: border-box;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+    nav {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    nav a {
+        width: 100%;
+        max-width: 220px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    main {
+        width: 96%;
+        padding: 12px;
+        margin: 12px auto;
+    }
+
+    h1 {
+        font-size: 22px;
         text-align: center;
     }
 
-    /* Smaller table text on mobile */
+    h2 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .card h3 {
+        font-size: 15px;
+    }
+
+    .card p {
+        font-size: 22px;
+    }
+
     table {
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+    }
+
+    button,
+    .button,
+    .details-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    input,
+    select {
         font-size: 14px;
     }
 }
