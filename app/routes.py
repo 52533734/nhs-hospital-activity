@@ -2,10 +2,22 @@ from flask import Blueprint, render_template, request
 from app import db
 from app.models import Provider, Region, MonthlyActivity
 from app.services import (
+    dashboard_totals,
     top_10_busiest_providers,
     average_emergency_by_region,
     highest_outpatient_attendance,
-    highest_dna_appointments
+    provider_detail_totals,
+    national_provider_averages,
+    provider_region_rank,
+    best_and_worst_providers,
+    provider_monthly_summary,
+    age_band_summary,
+    age_band_dna_rates,
+    highest_emergency_age_bands,
+    age_best_and_worst_dna_rates,
+    specialty_summary,
+    specialty_dna_rates,
+    admissions_dna_correlation
 )
 from app.services import provider_summary
 
@@ -61,6 +73,7 @@ def providers():
     # Get all regions for dropdown
     regions = Region.query.order_by(Region.region_name).all()
 
+
     return render_template(
         "providers.html",
         providers=providers,
@@ -71,21 +84,32 @@ def providers():
         min_outpatients=min_outpatients
     )
 
+
 @main.route("/providers/<int:provider_id>")
 def provider_detail(provider_id):
 
     # Find provider by ID
     provider = Provider.query.get_or_404(provider_id)
 
-    # Get provider activity records
-    activities = provider.monthly_activities
+    # Calculate provider totals
+    totals = provider_detail_totals(provider)
+
+    # Calculate national averages
+    national_averages = national_provider_averages()
+
+    # Calculate provider rank in its region
+    region_rank = provider_region_rank(provider)
 
     # Send data to template
     return render_template(
         "provider_detail.html",
         provider=provider,
-        activities=activities
+        activities=provider_monthly_summary(provider),
+        totals=totals,
+        national_averages=national_averages,
+        region_rank=region_rank
     )
+
 
 @main.route("/analytics")
 def analytics():
@@ -93,7 +117,18 @@ def analytics():
     busiest_providers = top_10_busiest_providers()
     emergency_by_region = average_emergency_by_region()
     outpatient_attendance = highest_outpatient_attendance()
-    dna_appointments = highest_dna_appointments()
+
+    # Load dashboard summary totals
+    totals = dashboard_totals()
+
+    # Load best and worst provider performance
+    provider_cases = best_and_worst_providers()
+
+    # Load specialty DNA rates
+    specialty_rates = specialty_dna_rates()
+
+    # Calculate admissions and DNA correlation
+    correlation = admissions_dna_correlation()
 
     # Send analytics data to template
     return render_template(
@@ -101,7 +136,10 @@ def analytics():
         busiest_providers=busiest_providers,
         emergency_by_region=emergency_by_region,
         outpatient_attendance=outpatient_attendance,
-        dna_appointments=dna_appointments
+        provider_cases=provider_cases,
+        specialty_rates=specialty_rates,
+        totals=totals,
+        correlation=correlation
     )
 
 
@@ -153,6 +191,30 @@ def compare():
         provider2_id=provider2_id,
         provider3_id=provider3_id,
         error_message=error_message
+    )
+
+
+@main.route("/age-analytics")
+def age_analytics():
+    #Load age-band summary data
+    age_summary = age_band_summary()
+
+    #Load DNA rate data by age band
+    dna_rates = age_band_dna_rates()
+
+    #Load highest emergency age bands
+    emergency_age_bands = highest_emergency_age_bands()
+
+    # Load best and worst age-band DNA cases
+    age_cases = age_best_and_worst_dna_rates()
+
+    #Render age analytics page
+    return render_template(
+        "age_analytics.html",
+        age_summary=age_summary,
+        dna_rates=dna_rates,
+        emergency_age_bands=emergency_age_bands,
+        age_cases=age_cases
     )
 
 

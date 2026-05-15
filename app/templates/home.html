@@ -8,11 +8,11 @@
 
 <!-- Introductory information box -->
 <p class="info-box">
-    Analyse NHS hospital activity data across England, including admissions,
-    outpatient attendance, missed appointments, and provider comparisons.
+    Explore NHS hospital activity data across England using provider search,
+    regional analysis, activity comparisons, outpatient statistics,
+    emergency admissions, and age-based healthcare trends.
 </p>
 
-<!-- Horizontal divider -->
 <hr>
 
 <!-- Features section heading -->
@@ -41,7 +41,7 @@
         <h3>View Analytics</h3>
 
         <!-- Card description -->
-        <p>Explore provider rankings, emergency admissions, outpatient activity, and DNA appointments.</p>
+        <p>Explore provider rankings, regional trends, specialty activity, and missed appointment performance.</p>
 
         <!-- Link button to analytics page -->
         <a class="button" href="{{ url_for('main.analytics') }}">View Analytics</a>
@@ -60,9 +60,21 @@
         <a class="button" href="{{ url_for('main.compare') }}">Compare Providers</a>
     </div>
 
+    <!-- Age analytics feature card -->
+    <div class="card">
+
+        <!-- Card title -->
+        <h3>Age Analytics</h3>
+
+        <!-- Card description -->
+        <p>Analyse emergency activity, missed appoinment rates, and appointment behaviour by patient age group.</p>
+
+        <!-- Link button to age analytics page -->
+        <a class="button" href="{{ url_for('main.age_analytics') }}">View Age Analytics</a>
+    </div>
+
 </div>
 
-<!-- Horizontal divider -->
 <hr>
 
 <!-- Dataset section heading -->
@@ -78,16 +90,16 @@
 <ul>
 
     <!-- Emergency admissions metric -->
-    <li>Emergency admissions</li>
+    <li>Emergency Admissions</li>
 
     <!-- Elective admissions metric -->
-    <li>Elective admissions</li>
+    <li>Elective Admissions</li>
 
     <!-- Outpatient attendance metric -->
-    <li>Outpatient attendance</li>
+    <li>Outpatient Attendance</li>
 
     <!-- Missed appointments metric -->
-    <li>DNA appointments</li>
+    <li>Missed Appointments</li>
 </ul>
 
 <!-- End of content block -->

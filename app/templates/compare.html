@@ -7,12 +7,6 @@
 <!-- Main page heading -->
 <h1>Compare NHS Providers</h1>
 
-<!-- Information box explaining comparison feature -->
-<p class="info-box">
-    Select two or three providers to compare their admissions,
-    outpatient attendance, and DNA appointments.
-</p>
-
 <!-- Provider comparison form using GET request -->
 <form class="compare-form" method="GET" action="{{ url_for('main.compare') }}">
 
@@ -202,11 +196,11 @@
         {% endfor %}
     </tr>
 
-    <!-- DNA appointments comparison row -->
+    <!-- Missed appointments comparison row -->
     <tr>
-        <td>DNA Appointments</td>
+        <td>Missed Appointments</td>
 
-        <!-- Display DNA appointments for each selected provider -->
+        <!-- Display missed appointments for each selected provider -->
         {% for provider in selected_providers %}
             <td>{{ provider.dna_appointments }}</td>
         {% endfor %}
@@ -215,6 +209,12 @@
 </table>
 
 {% endif %}
+
+<!-- Information box explaining provider comparison metrics -->
+<div class="info-box">
+    Comparing provider metrics helps identify differences
+    in admissions, outpatient activity, and appointment attendance behaviour.
+</div>
 
 <!-- End of content block -->
 {% endblock %}

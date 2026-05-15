@@ -8,35 +8,135 @@
 
 <!-- Information box describing the dashboard -->
 <p class="info-box">
-    This page summarises NHS provider activity using admissions,
-    outpatient attendance, emergency activity, and missed appointments.
+    Analyse NHS provider performance using admissions,
+    emergency activity, outpatient attendance, missed appointments,
+    and regional healthcare trends.
 </p>
 
-<!-- Section heading for busiest providers -->
-<h2>Top 10 Busiest Providers by Admissions</h2>
+<!-- Dashboard summary cards -->
+<div class="card-grid">
 
-<!-- Table showing providers with highest admissions -->
+    <!-- Provider count card -->
+    <div class="card">
+        <h3>Total Providers</h3>
+        <p>{{ totals.providers }}</p>
+    </div>
+
+    <!-- Region count card -->
+    <div class="card">
+        <h3>Total Regions</h3>
+        <p>{{ totals.regions }}</p>
+    </div>
+
+    <!-- Admission total card -->
+    <div class="card">
+        <h3>Total Admissions</h3>
+        <p>{{ totals.total_admissions }}</p>
+    </div>
+
+    <!-- Missed Appointments total card -->
+    <div class="card">
+        <h3>Total Missed Appointments</h3>
+        <p>{{ totals.total_dna }}</p>
+    </div>
+
+    <!-- Admissions vs Missed Appointments Correlation card -->
+    <div class="card">
+        <h3>Admissions vs Missed Appointments Correlation</h3>
+        <p>{{ correlation }}</p>
+    </div>
+
+</div>
+
+<div class="info-box">
+    The admissions and missed appointment correlation measures whether providers
+    with higher admissions also tend to experience higher missed appointment totals.
+    Values closer to 1 indicate a stronger positive relationship.
+</div>
+
+<hr>
+
+<!-- Section heading for best-performing providers -->
+<h2>Best Performing Providers</h2>
+
+<!-- Table showing top provider rankings -->
 <table>
 
     <!-- Table header row -->
     <tr>
+        <th>Rank</th>
         <th>Provider</th>
         <th>Region</th>
-        <th>Total Admissions</th>
+        <th>Missed Appointment Rate</th>
+        <th>Performance Score</th>
     </tr>
 
-    <!-- Loop through busiest providers data -->
-    {% for provider in busiest_providers %}
+    <!-- Loop through best-performing providers -->
+    {% for provider in provider_cases.best %}
 
     <!-- Table row for each provider -->
     <tr>
+        <td>{{ loop.index }}</td>
         <td>{{ provider.org_name }}</td>
         <td>{{ provider.region_name.title() }}</td>
-        <td>{{ provider.total_admissions }}</td>
+        <td>{{ provider.dna_rate }}%</td>
+        <td>{{ provider.performance_score }}</td>
     </tr>
 
     {% endfor %}
+
 </table>
+
+<!-- Information box explaining ranking logic -->
+<div class="info-box">
+    Best-performing providers are ranked using a simple score based on lower missed appointment rates
+    and higher admission activity. This provides a simple operational performance indicator combining appointment attendance and provider activity levels.
+</div>
+
+<hr>
+
+<!-- Section heading for missed appointments performance analysis -->
+<h2>Missed Appointment Performance Analysis</h2>
+
+<!-- Combined missed appointments analytics table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>#</th>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total Missed Appointments</th>
+        <th>Total Outpatients</th>
+        <th>Missed Appointment Rate</th>
+    </tr>
+
+    <!-- Loop through providers with highest missed appointment rates -->
+    {% for provider in provider_cases.worst %}
+
+    <!-- Table row for each provider -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ provider.org_name }}</td>
+        <td>{{ provider.region_name.title() }}</td>
+        <td>{{ provider.total_dna }}</td>
+        <td>{{ provider.total_outpatients }}</td>
+        <td>{{ provider.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- Information box explaining missed appoinment metrics -->
+<div class="info-box">
+    Missed appointment analysis is shown using both total missed appointments
+    and missed appointment rate. Total missed appointments highlight operational
+    impact, while the rate shows the percentage of appointments missed relative
+    to outpatient activity.
+</div>
+
+<hr>
 
 <!-- Section heading for emergency admissions by region -->
 <h2>Average Emergency Admissions by Region</h2>
@@ -62,16 +162,63 @@
     </tr>
 
     {% endfor %}
+
 </table>
 
+<!-- Information box explaining emergency admission trends by region -->
+<div class="info-box">
+    Regions with higher emergency admission averages may reflect
+    larger populations, greater healthcare demand, or increased
+    pressure on urgent care services.
+</div>
+
+<hr>
+
+<!-- Section heading for busiest providers -->
+<h2>Top 10 Busiest Providers by Admissions</h2>
+
+<!-- Table showing providers with highest admissions -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>#</th>
+        <th>Provider</th>
+        <th>Region</th>
+        <th>Total Admissions</th>
+    </tr>
+
+    <!-- Loop through busiest providers data -->
+    {% for provider in busiest_providers %}
+
+    <!-- Table row for each provider -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ provider.org_name }}</td>
+        <td>{{ provider.region_name.title() }}</td>
+        <td>{{ provider.total_admissions }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+<div class="info-box">
+    Providers with the highest admission totals are typically large NHS trusts
+    serving major population centres. These organisations may experience
+    greater pressure on emergency and outpatient services.
+</div>
+
+<hr>
+
 <!-- Section heading for outpatient attendance -->
-<h2>Highest Outpatient Attendance</h2>
+<h2>Providers with Highest Outpatient Attendance</h2>
 
 <!-- Table showing outpatient attendance -->
 <table>
 
     <!-- Table header row -->
     <tr>
+        <th>#</th>
         <th>Provider</th>
         <th>Region</th>
         <th>Total Outpatients</th>
@@ -82,6 +229,7 @@
 
     <!-- Table row for each provider -->
     <tr>
+        <td>{{ loop.index }}</td>
         <td>{{ provider.org_name }}</td>
         <td>{{ provider.region_name.title() }}</td>
         <td>{{ provider.total_outpatients }}</td>
@@ -90,31 +238,53 @@
     {% endfor %}
 </table>
 
-<!-- Section heading for DNA appointments -->
-<h2>Highest DNA Appointments</h2>
+<!-- Information box explaining outpatient attendance activity -->
+<div class="info-box">
+    Providers with high outpatient attendance manage large volumes
+    of follow-up and referral-based care activity across NHS services.
+</div>
 
-<!-- Table showing DNA appointment statistics -->
+<hr>
+
+<!-- Section heading for specialty activity summary -->
+<h2>Treatment Specialty Workload and Missed Appointment Rates</h2>
+
+<!-- Table showing activity by treatment specialty -->
 <table>
 
     <!-- Table header row -->
     <tr>
-        <th>Provider</th>
-        <th>Region</th>
-        <th>Total DNA Appointments</th>
+        <th>Rank</th>
+        <th>Specialty</th>
+        <th>Emergency Activity</th>
+        <th>Total Appointments</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointment Rate</th>
     </tr>
 
-    <!-- Loop through DNA appointment data -->
-    {% for provider in dna_appointments %}
+    <!-- Loop through specialty activity results -->
+    {% for specialty in specialty_rates %}
 
-    <!-- Table row for each provider -->
+    <!-- Table row for each specialty -->
     <tr>
-        <td>{{ provider.org_name }}</td>
-        <td>{{ provider.region_name.title() }}</td>
-        <td>{{ provider.total_dna }}</td>
+        <td>{{ loop.index }}</td>
+        <td>{{ specialty.specialty_name }}</td>
+        <td>{{ specialty.total_emergency }}</td>
+        <td>{{ specialty.total_appointments }}</td>
+        <td>{{ specialty.dna_appointments }}</td>
+        <td>{{ specialty.dna_rate }}%</td>
     </tr>
 
     {% endfor %}
+
 </table>
+
+<!-- Information box explaining treatment specialty analytics -->
+<div class="info-box">
+    Treatment specialty analysis helps identify which clinical areas
+    experience the greatest emergency demand, outpatient workload,
+    and appointment attendance challenges.
+</div>
 
 <!-- End of content block -->
 {% endblock %}

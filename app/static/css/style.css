@@ -203,6 +203,42 @@ tr:hover {
     color: #003087;
 }
 
+/* Large dashboard metric values */
+.card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #003087;
+    margin: 10px 0 0;
+    word-break: break-word;
+}
+
+/* Summary card grid for detail pages */
+.summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+/* Make summary cards more dashboard-like */
+.summary-grid .card {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Smaller card titles */
+.summary-grid .card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* Larger metric values */
+.summary-grid .card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #003087;
+    margin: 0;
+}
+
 /* Pagination container */
 .pagination {
     margin-top: 20px;

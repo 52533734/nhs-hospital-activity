@@ -8,8 +8,9 @@
 
 <!-- Information box explaining page purpose -->
 <p class="info-box">
-    Use the filters below to search providers by name, region, admissions,
-    or outpatient attendance.
+    Search NHS providers using provider names, regional filters,
+    admissions thresholds, and outpatient attendance levels
+    to identify healthcare activity patterns across England.
 </p>
 
 <!-- Provider search and filter form -->
@@ -140,11 +141,15 @@
 
 {% else %}
 
+
 <!-- Table displaying provider information -->
 <table>
 
     <!-- Table header row -->
     <tr>
+
+        <!-- Provider rank column -->
+        <th>#</th>
 
         <!-- Provider name column -->
         <th>Provider Name</th>
@@ -162,6 +167,10 @@
     <!-- Table row for each provider -->
     <tr>
 
+        <!-- Provider index cell -->
+        <td>
+            {{ loop.index + ((providers.page - 1) * providers.per_page) }}
+        </td>
         <!-- Provider name cell -->
         <td class="provider-name">
             {{ provider.org_name }}
@@ -189,7 +198,7 @@
 
             <!-- Link to provider details page -->
             <a class="details-button" href="{{ url_for('main.provider_detail', provider_id=provider.id) }}">
-                View Details
+                View Provider
             </a>
         </td>
     </tr>

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+<!-- Start of content block -->
+{% block content %}
+
+<!-- Main page heading -->
+<h1>Age-Based Analytics</h1>
+
+<!-- Information box explaining page purpose -->
+<p class="info-box">
+    Explore NHS hospital activity by patient age group,
+    including emergency admissions, outpatient attendance,
+    appointment attendance behaviour, and missed appointments rates.
+</p>
+
+<!-- Dashboard summary cards -->
+<div class="card-grid">
+
+    <!-- Highest missed appointment rate card -->
+    <div class="card">
+        <h3>Highest Missed Appointments Rate</h3>
+        <p>{{ age_cases.worst[0].dna_rate }}%</p>
+    </div>
+
+    <!-- Lowest missed appointment rate card -->
+    <div class="card">
+        <h3>Lowest Missed Appointment Rate</h3>
+        <p>{{ age_cases.best[0].dna_rate }}%</p>
+    </div>
+
+    <!-- Highest emergency activity card -->
+    <div class="card">
+        <h3>Highest Emergency Activity</h3>
+        <p>{{ emergency_age_bands[0].total_emergency }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- Emergency activity section heading -->
+<h2>Highest Emergency Activity by Age Band</h2>
+
+<!-- Emergency activity explanation -->
+<p class="info-box">
+    Emergency activity analysis helps identify which age groups
+    place the highest demand on NHS emergency healthcare services.
+</p>
+
+<!-- Emergency activity table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>#</th>
+        <th>Age Band</th>
+        <th>Total Emergency Activity</th>
+    </tr>
+
+    <!-- Loop through emergency activity results -->
+    {% for age in emergency_age_bands %}
+
+    <!-- Emergency activity row -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_emergency }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<!-- Full age summary section heading -->
+<h2>Age Band Activity Summary</h2>
+
+<!-- Age summary explanation -->
+<p class="info-box">
+    This summary compares emergency activity, attended appointments,
+    and missed appointments across all patient age groups.
+</p>
+
+<!-- Full summary table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>Age Band</th>
+        <th>Emergency</th>
+        <th>Total Appointments</th>
+        <th>Attended Appointments</th>
+        <th>Missed Appointments</th>
+    </tr>
+
+    <!-- Loop through age summary data -->
+    {% for age in age_summary %}
+
+    <!-- Summary row -->
+    <tr>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_emergency }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.attended_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<!-- Highest missed appointments section heading -->
+<h2>Highest Missed Appointments Rate Age Groups</h2>
+
+<!-- Highest missed appointments explanation -->
+<p class="info-box">
+    These age groups have the highest percentage of missed appointments.
+</p>
+
+<!-- Highest missed appointments table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>#</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointment Rate</th>
+    </tr>
+
+    <!-- Loop through highest missed appointments cases -->
+    {% for age in age_cases.worst %}
+
+    <!-- Highest missed appointments row -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<hr>
+
+<!-- Lowest missed appointments section heading -->
+<h2>Strongest Appointments Attendance Rate Age Groups</h2>
+
+<!-- Lowest missed appointments explanation -->
+<p class="info-box">
+    These age groups show the strongest appointment attendance behaviour.
+</p>
+
+<!-- Lowest missed appointments table -->
+<table>
+
+    <!-- Table header row -->
+    <tr>
+        <th>#</th>
+        <th>Age Band</th>
+        <th>Total Appointments</th>
+        <th>Missed Appointments</th>
+        <th>Missed Appointments Rate</th>
+    </tr>
+
+    <!-- Loop through lowest missed appointments cases -->
+    {% for age in age_cases.best %}
+
+    <!-- Lowest missed appointments row -->
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ age.age_band }}</td>
+        <td>{{ age.total_appointments }}</td>
+        <td>{{ age.dna_appointments }}</td>
+        <td>{{ age.dna_rate }}%</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<!-- End of content block -->
+{% endblock %}
