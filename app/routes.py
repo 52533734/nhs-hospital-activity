@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request
 from app import db
+from flask import abort
 from app.models import Provider, Region, MonthlyActivity
 from app.services import (
     dashboard_totals,
     top_10_busiest_providers,
     average_emergency_by_region,
     highest_outpatient_attendance,
+    provider_summary,
     provider_detail_totals,
     national_provider_averages,
     provider_region_rank,
@@ -19,7 +21,6 @@ from app.services import (
     specialty_dna_rates,
     admissions_dna_correlation
 )
-from app.services import provider_summary
 
 main = Blueprint("main", __name__)
 
@@ -89,7 +90,10 @@ def providers():
 def provider_detail(provider_id):
 
     # Find provider by ID
-    provider = Provider.query.get_or_404(provider_id)
+    provider = db.session.get(Provider, provider_id)
+
+    if provider is None:
+        abort(404)
 
     # Calculate provider totals
     totals = provider_detail_totals(provider)
@@ -177,7 +181,7 @@ def compare():
     # Only build comparison if there is no validation error
     if not error_message:
         for provider_id in selected_ids:
-            provider = Provider.query.get(provider_id)
+            provider = db.session.get(Provider, provider_id)
 
             if provider:
                 selected_providers.append(provider_summary(provider))
