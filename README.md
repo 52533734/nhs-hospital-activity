@@ -3,7 +3,7 @@ The NHS Hospital Activity Explorer is a Flask-based web application that analyse
 
 ## Features
 
-### Provide Explorer:
+### Provider Explorer:
 - Browse NHS providers with pagination
 - Search providers by organisation name
 - Filter providers by:
@@ -61,12 +61,12 @@ The NHS Hospital Activity Explorer is a Flask-based web application that analyse
 ## Dataset Information
 The application uses NHS Hospital Episode Statistics (HES) open data from England.
 
-### Dataset include:
+### Datasets include:
 - Provider-level hospital activity
 - Age-band healthcare activity
 - Treatment specialty activity
 
-### Metric analysed include:
+### Metrics analysed include:
 - Emergency admissions
 - Elective admissions
 - Outpatient attendance
@@ -77,10 +77,10 @@ The imported dataset was limited to a suitable coursework-sized subset while pre
 
 
 ## Project Structure
-The project organised as follows:
+The project is organised as follows:
 
 - nhs-hospital-activity/: Main Flask application project
-- app/: Coure application containing routes, models, services, templates, and static files
+- app/: Core application containing routes, models, services, templates, and static files
 - app/templates/: HTML templates rendered using Jinja2
 - app/static/: CSS styling and static assets
 - scripts/: Data-loading and Database-creation scripts for NHS CSV datasets
@@ -117,7 +117,7 @@ source venv/bin/activate
 
 4. Install Dependencies
 ```bash
-pip install -r requiremnts.txt
+pip install -r requirements.txt
 ```
 
 ## Running the Application
@@ -147,7 +147,7 @@ Run all automated tests:
 ```bash
 pytest
 ```
-The project includes 41 automated test covering:
+The project includes 41 automated tests covering:
 - Model Tests
 - Route Tests
 - Service-layer analytics tests
