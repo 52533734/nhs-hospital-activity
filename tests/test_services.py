@@ -72,7 +72,7 @@ def test_provider_detail_totals_calculates_expected_values(app):
 
 
 def test_provider_detail_totals_handles_zero_outpatients(app):
-    """DNA rate should be zero if a provider has no outpatient appointments."""
+    """Missed appoinment(DNA) rate should be zero if a provider has no outpatient appointments."""
     with app.app_context():
         provider = Provider.query.filter_by(org_code="C001").first()
         totals = provider_detail_totals(provider)
@@ -163,7 +163,7 @@ def test_age_band_summary_cleans_labels_and_orders_by_emergency(app):
 
 
 def test_age_band_dna_rates_handles_zero_appointments(app):
-    """Age DNA rates should avoid division by zero."""
+    """Age missed appoinment(DNA) rates should avoid division by zero."""
     with app.app_context():
         rates = age_band_dna_rates()
 
@@ -183,7 +183,7 @@ def test_age_band_summary_handles_empty_table(app):
 
 
 def test_specialty_dna_rates_handles_zero_appointments(app):
-    """Specialty DNA rates should avoid division by zero."""
+    """Specialty missed appoinment(DNA) rates should avoid division by zero."""
     with app.app_context():
         rates = specialty_dna_rates()
 

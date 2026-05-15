@@ -131,7 +131,7 @@ class MonthlyActivity(db.Model):
     def total_outpatient_attendance(self):
         return (self.all_first_total or 0) + (self.all_subsequent_seen or 0)
 
-    # Calculate total DNA appointments
+    # Calculate total missed appoinment(DNA)
     @property
     def dna_total(self):
         return (self.all_first_dna or 0) + (self.all_subsequent_dna or 0)

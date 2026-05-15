@@ -6,20 +6,18 @@
 <!-- Provider name heading -->
 <h1>{{ provider.org_name }}</h1>
 
+<!-- Region of the provider -->
 <div class="info-box">
 
-    <!-- Region label -->
     <strong>Region:</strong>
 
     <!-- Check if provider has a region -->
     {% if provider.region %}
 
-        <!-- Display provider region -->
         {{ provider.region.region_name.title() }}
 
     {% else %}
 
-        <!-- Display fallback text -->
         Unknown
 
     {% endif %}
@@ -92,10 +90,8 @@
 
 <hr>
 
-<!-- Provider activity breakdown heading -->
+<!-- Provider activity breakdown section -->
 <h2>Provider Activity Breakdown</h2>
-
-<!-- Activity breakdown explanation -->
 <p class="info-box">
     This table shows elective admissions, emergency admissions,
     outpatient activity, missed appointments, and monthly missed appointment rate.
@@ -130,26 +126,12 @@
 
     <!-- Table row for each activity record -->
     <tr>
-
-        <!-- Display activity month -->
         <td>{{ activity.activity_month }}</td>
-
-        <!-- Display elective admissions -->
         <td>{{ activity.all_elective_total }}</td>
-
-        <!-- Display emergency admissions -->
         <td>{{ activity.all_non_elective }}</td>
-
-        <!-- Display total admissions -->
         <td>{{ activity.total_admissions }}</td>
-
-        <!-- Display outpatient attendance -->
         <td>{{ activity.total_outpatient_attendance }}</td>
-
-        <!-- Display missed appointments -->
         <td>{{ activity.dna_total }}</td>
-
-        <!-- Display monthly missed appointment rate -->
         <td>
             {% if activity.total_outpatient_attendance %}
                 {{ "%.2f"|format((activity.dna_total / activity.total_outpatient_attendance) * 100) }}%
@@ -157,7 +139,6 @@
                 0%
             {% endif %}
         </td>
-
     </tr>
 
     {% endfor %}

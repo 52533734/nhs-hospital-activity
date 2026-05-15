@@ -128,10 +128,10 @@ def analytics():
     # Load best and worst provider performance
     provider_cases = best_and_worst_providers()
 
-    # Load specialty DNA rates
+    # Load specialty missed appoinment(DNA) rates
     specialty_rates = specialty_dna_rates()
 
-    # Calculate admissions and DNA correlation
+    # Calculate admissions and missed appoinment(DNA) correlation
     correlation = admissions_dna_correlation()
 
     # Send analytics data to template
@@ -203,13 +203,13 @@ def age_analytics():
     #Load age-band summary data
     age_summary = age_band_summary()
 
-    #Load DNA rate data by age band
+    #Load missed appoinment(DNA) rate data by age band
     dna_rates = age_band_dna_rates()
 
     #Load highest emergency age bands
     emergency_age_bands = highest_emergency_age_bands()
 
-    # Load best and worst age-band DNA cases
+    # Load best and worst age-band missed appoinment(DNA) cases
     age_cases = age_best_and_worst_dna_rates()
 
     #Render age analytics page
