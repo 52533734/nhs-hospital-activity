@@ -2,6 +2,11 @@ from app import db
 from app.models import Provider, Region, MonthlyActivity, AgeBandActivity, TreatmentSpecialty, TreatmentSpecialtyActivity
 
 
+def percentage(part, whole):
+    # Calculate a safe percentage value
+    return round((part / whole) * 100, 2) if whole else 0
+
+
 def clean_age_band(age_band):
     # Return Unknown if value is empty
     if not age_band:
@@ -138,7 +143,7 @@ def provider_detail_totals(provider):
     )
 
     # Calculate missed appointment(DNA) percentage
-    dna_rate = round((total_dna / total_outpatients) * 100, 2) if total_outpatients else 0
+    dna_rate = percentage(total_dna, total_outpatients)
 
     # Return provider totals
     return {
@@ -179,14 +184,8 @@ def provider_performance_rankings():
     # Loop through provider results
     for row in results:
 
-        # Calculate total appointments
-        total_appointments = row.total_outpatients or 0
-
         # Calculate missed appointment(DNA) rate
-        dna_rate = round(
-            ((row.total_dna or 0) / total_appointments) * 100,
-            2
-        ) if total_appointments else 0
+        dna_rate = percentage(row.total_dna or 0, row.total_outpatients)
 
         # Calculate simple performance score
         performance_score = round(
@@ -305,6 +304,31 @@ def best_and_worst_providers():
         "worst": rankings[-10:][::-1]
     }
 
+def provider_monthly_summary(provider):
+    # Group provider activity records by month
+    monthly_summary = {}
+
+    for activity in provider.monthly_activities:
+        month = activity.activity_month
+
+        if month not in monthly_summary:
+            monthly_summary[month] = {
+                "activity_month": month,
+                "all_elective_total": 0,
+                "all_non_elective": 0,
+                "total_admissions": 0,
+                "total_outpatient_attendance": 0,
+                "dna_total": 0
+            }
+
+        monthly_summary[month]["all_elective_total"] += activity.all_elective_total or 0
+        monthly_summary[month]["all_non_elective"] += activity.all_non_elective or 0
+        monthly_summary[month]["total_admissions"] += activity.total_admissions
+        monthly_summary[month]["total_outpatient_attendance"] += activity.total_outpatient_attendance
+        monthly_summary[month]["dna_total"] += activity.dna_total
+
+    return list(monthly_summary.values())
+
 
 def age_band_summary():
     # Get NHS activity grouped by age band
@@ -343,10 +367,10 @@ def age_band_dna_rates():
             "age_band": row["age_band"],
             "total_appointments": row["total_appointments"],
             "dna_appointments": row["dna_appointments"],
-            "dna_rate": round(
-                (row["dna_appointments"] / row["total_appointments"]) * 100,
-                2
-            ) if row["total_appointments"] else 0
+            "dna_rate": percentage(
+                row["dna_appointments"],
+                row["total_appointments"]
+            )
         }
         for row in results
     ]
@@ -439,10 +463,7 @@ def specialty_dna_rates():
             "total_emergency": row.total_emergency or 0,
             "total_appointments": row.total_appointments or 0,
             "dna_appointments": row.dna_appointments or 0,
-            "dna_rate": round(
-                ((row.dna_appointments or 0) / row.total_appointments) * 100,
-                2
-            ) if row.total_appointments else 0
+            "dna_rate": percentage(row.dna_appointments or 0, row.total_appointments)
         }
         for row in rows
     ]
